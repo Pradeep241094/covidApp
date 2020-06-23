@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Form, Item, Input, Body, Text, CheckBox, Button } from 'native-base';
+import { View, StyleSheet, Text } from 'react-native';
+import { Form, Item, Input, Body, CheckBox, Button } from 'native-base';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 
