@@ -1,7 +1,10 @@
 import React from "react";
 // import Slider from "react-native-slider";
-import { Slider, Button } from 'react-native';
+import {  Button } from 'react-native';
+import { Slider } from 'react-native-elements';
 import { AppRegistry, StyleSheet, View, Text } from "react-native";
+import { Card, Title } from 'react-native-paper';
+import {SafeAreaView, ScrollView } from 'react-native';
 
 let customFonts = {
     'GoogleSans-Bold': require('../assets/fonts/GoogleSans-Bold.ttf'),
@@ -30,50 +33,97 @@ class Symptoms extends React.Component {
     } 
   };
 
-//   async componentDidMount() {
-//     this.setState({
-//       isLoading: true,
-//     }
-//     );
+  async componentDidMount() {
+    this.setState({
+      isLoading: true,
+    }
+    );
 
-//     try {
-//       fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
-//         method: 'post',
-//         cors: 'no-cors',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(
-//           patientID,
-//           updateDate,
-//           symptomRecords,
-//         ),
-//       }).catch((error) => {
-//         this.setState({
-//           isLoading: false
-//         })
-//         console.error(error);
-//       });
+    try {
+        this.insertPatientData()
+        this.getPatientData()
+        this.updatePatientData()
+    } 
+    catch (e) {
+      console.log(e)
+    } 
+  }
 
-//       fetch('/api/covid/Patient/GetFollowUpData')
-//       .then(response => response.json())
-//       .then(responseJson => {
-//         this.setState(
-//           {
-//             isLoading: false,
-//             data: responseJson,
-//           },
-//           function() {}
-//         );
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//     } 
-//     catch (e) {
-//       console.log(e)
-//     } 
-//   }
+  insertPatientData () {
+      const {patient_ID, updateDate, symptoms} = this.state;
+
+    fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
+        method: 'POST',
+        cors: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          patient_ID,
+          updateDate,
+          symptoms,
+        ),
+      }) .then(response => response.json())
+      .then(responseJson => {
+          this.setState({
+              symptoms: responseJson,
+              isLoading: false,
+          })
+      })
+      .catch((error) => {
+        this.setState({
+          isLoading: false
+        })
+        console.error(error);
+      });
+  }
+
+  getPatientData () {
+    const {patient_ID, updateDate, symptoms} = this.state;
+    fetch('/api/covid/Patient/GetFollowUpData')
+    .then(response => response.json())
+    .then(responseJson => {
+      this.setState(
+        {
+          isLoading: false,
+          data: responseJson,
+        },
+        function() {}
+      );
+    })
+    .catch(error => {
+      console.error(error);
+    }); 
+  }
+
+  updatePatientData () {
+    const {patient_ID, updateDate, symptoms} = this.state;
+
+    fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
+        method: 'PUT',
+        cors: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          patient_ID,
+          updateDate,
+          symptoms,
+        ),
+      }) .then(response => response.json())
+      .then(responseJson => {
+          this.setState({
+              symptoms: responseJson,
+              isLoading: false,
+          })
+      })
+      .catch((error) => {
+        this.setState({
+          isLoading: false
+        })
+        console.error(error);
+      });
+  }
 
   render() {
     const {
@@ -92,8 +142,12 @@ class Symptoms extends React.Component {
     } = this.state;
 
     return (
-      <View style={styles.container}>
-        <View>
+      <SafeAreaView style={styles.boxcontainer}>
+      <ScrollView>
+      <Card style={{marginLeft: 10}}>
+        <Title>Record Symptoms</Title>
+        <Card >
+          <Card.Content>
           <Slider
           value={feverOrChills}
           minimumValue={0}
@@ -226,21 +280,25 @@ class Symptoms extends React.Component {
         <Text>
         Overall Syptoms: {symptomsAverage}
         </Text>
-        </View>
+          </Card.Content>
+        
+        </Card>
         <View style={styles.buttonContainer}>
         <Button
           title="Insert"
           color="#f194ff"
-          onPress={() => Alert.alert('Button with adjusted color pressed')}
+          onPress={() => this.insertPatientData()}
         />
         <Text>   </Text>
          <Button
           title="Update"
           color="blue"
-          onPress={() => Alert.alert('Button with adjusted color pressed')}
+          onPress={() => this.updatePatientData()}
         />
         </View>
-      </View>
+      </Card>
+      </ScrollView>
+    </SafeAreaView>
     );
   }
 }
@@ -261,10 +319,19 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     flexDirection: 'row',
+    marginLeft: 10,
+    marginRight: 10
   },
   marginContainer: {
     marginBottom: 10,
-  }
+  },
+  boxcontainer: {
+    flex: 1,
+    marginTop: 2,
+  },
+  text: {
+    fontSize: 42,
+  },
 });
 
 AppRegistry.registerComponent("Symptoms", () => Symptoms);

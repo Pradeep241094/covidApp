@@ -7,6 +7,7 @@ import AuthScreen from '../Screens/AuthScene';
 import Splashscreen from '../Screens/LoadingScene';
 import HomeScreen from '../Screens/HomeScreen';
 import Symptoms from '../Screens/Symptoms';
+import Header from '../Screens/Header';
 import { AppRegistry } from "react-native";
 
 const Stack = createStackNavigator()
@@ -53,15 +54,24 @@ class Navigator extends React.Component {
     return (
       <>
       {this.state.isSignedUp ?
-      <TabNavigator /> :
+      <>
+      <Header/>
+      <TabNavigator /> 
+      </>
+      :
+      <>
+        <Header/>
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Splash'>
-          <Stack.Screen options={{headerShown: false}} name='Splash' component={Splashscreen} />
+          <Stack.Screen 
+          
+          options={{headerShown: false}} name='Splash' component={Splashscreen} />
           <Stack.Screen options={{headerShown: false}} name='Auth' component={AuthScreen} />
           <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen} />
           <Stack.Screen options={{headerShown: false}} name="Record Symptoms" component={Symptoms} />
         </Stack.Navigator>
       </NavigationContainer>
+      </>
       }
       </>
     );
