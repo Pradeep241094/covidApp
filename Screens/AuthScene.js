@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { Form, Item, Input, Body, CheckBox, Button } from 'native-base';
+import { View, StyleSheet, Alert } from 'react-native';
+import { Form, Item, Input, Body, Text, CheckBox, Button } from 'native-base';
 import { AppLoading } from 'expo';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as Font from 'expo-font';
 
 let customFonts = {
@@ -12,8 +13,53 @@ let customFonts = {
 class AuthScene extends Component {
     state = {
         fontsLoaded: false,
+        username: "",
+        password: "",
+        patientcheckbox: true,
+        doctorcheckbox: false
     };
 
+    sendCred = async (props) => {
+        if (this.state.doctorcheckbox == true) {
+            fetch("https://mdfollowupauth.azurewebsites.net/api/Login/Provider", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "userID": this.state.username,
+                    "password": this.state.password
+                })
+            })
+                .then(res => res.json())
+                .then(async (data) => {
+                    // Alert.alert("patient done")
+                         await AsyncStorage.setItem('token',data.token)
+                         props.navigation.replace("HomeScreen")
+                })
+                .catch(error => Alert.alert('Doctor error'))
+
+        }
+        if (this.state.patientcheckbox == true) {
+            fetch("https://mdfollowupauth.azurewebsites.net/api/Login/Patient", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "userID": this.state.username,
+                    "password": this.state.password
+                })
+            })
+                .then(res => res.json())
+                .then(async (data) => {
+                    await AsyncStorage.setItem('token',data.token)
+                    this.props.navigation.navigate("Home")
+                })
+                .catch( async error => {console.log('Patient error')});
+
+        }
+    }
     async _loadFontsAsync() {
         await Font.loadAsync(customFonts);
         this.setState({ fontsLoaded: true });
@@ -35,25 +81,25 @@ class AuthScene extends Component {
                             <Text style={[styles.textContainer, styles.signin]}>Sign in</Text>
                             <Form style={styles.mainForm}>
                                 <Item style={styles.formItems}>
-                                    <Input placeholder="Username" style={styles.Input} />
+                                    <Input placeholder="Username" style={styles.Input} onChangeText={text => this.setState({ username: text })} />
                                 </Item>
                                 <Item style={styles.formItems}>
-                                    <Input placeholder="Password" style={styles.Input} />
+                                    <Input secureTextEntry placeholder="Password" style={styles.Input} onChangeText={text => this.setState({ password: text })} />
                                 </Item>
 
                                 <View style={styles.loginAs}>
                                     <Text style={styles.loginText}>Login as</Text>
-                                    <CheckBox checked={true} />
+                                    <CheckBox checked={this.state.patientcheckbox} onPress={() => this.setState({ patientcheckbox: !this.state.patientcheckbox, doctorcheckbox: !this.state.doctorcheckbox })} />
                                     <Body>
-                                        <Text style={styles.cboxText}>Patient</Text>
+                                    <Text style={styles.cboxText}>Patient</Text>
                                     </Body>
-                                    <CheckBox checked={false} />
+                                    <CheckBox checked={this.state.doctorcheckbox} onPress={() => this.setState({ doctorcheckbox: !this.state.doctorcheckbox, patientcheckbox: !this.state.patientcheckbox })} />
                                     <Body>
-                                        <Text style={styles.cboxText}>Doctor</Text>
+                                    <Text style={styles.cboxText}>Doctor</Text>
                                     </Body>
                                 </View>
                                 <View style={styles.Button}>
-                                    <Button block style={styles.mainBtn}>
+                                    <Button block style={styles.mainBtn} onPress={() => this.sendCred()}>
                                         <Text style={styles.btnText}>Login</Text>
                                     </Button>
                                 </View>
