@@ -33,97 +33,97 @@ class Symptoms extends React.Component {
     } 
   };
 
-  async componentDidMount() {
-    this.setState({
-      isLoading: true,
-    }
-    );
+  // async componentDidMount() {
+  //   this.setState({
+  //     isLoading: true,
+  //   }
+  //   );
 
-    try {
-        this.insertPatientData()
-        this.getPatientData()
-        this.updatePatientData()
-    } 
-    catch (e) {
-      console.log(e)
-    } 
-  }
+  //   try {
+  //       this.insertPatientData()
+  //       this.getPatientData()
+  //       this.updatePatientData()
+  //   } 
+  //   catch (e) {
+  //     console.log(e)
+  //   } 
+  // }
 
-  insertPatientData () {
-      const {patient_ID, updateDate, symptoms} = this.state;
+  // insertPatientData () {
+  //     const {patient_ID, updateDate, symptoms} = this.state;
 
-    fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
-        method: 'POST',
-        cors: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(
-          patient_ID,
-          updateDate,
-          symptoms,
-        ),
-      }) .then(response => response.json())
-      .then(responseJson => {
-          this.setState({
-              symptoms: responseJson,
-              isLoading: false,
-          })
-      })
-      .catch((error) => {
-        this.setState({
-          isLoading: false
-        })
-        console.error(error);
-      });
-  }
+  //   fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
+  //       method: 'POST',
+  //       cors: 'no-cors',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(
+  //         patient_ID,
+  //         updateDate,
+  //         symptoms,
+  //       ),
+  //     }) .then(response => response.json())
+  //     .then(responseJson => {
+  //         this.setState({
+  //             symptoms: responseJson,
+  //             isLoading: false,
+  //         })
+  //     })
+  //     .catch((error) => {
+  //       this.setState({
+  //         isLoading: false
+  //       })
+  //       console.error(error);
+  //     });
+  // }
 
-  getPatientData () {
-    const {patient_ID, updateDate, symptoms} = this.state;
-    fetch('/api/covid/Patient/GetFollowUpData')
-    .then(response => response.json())
-    .then(responseJson => {
-      this.setState(
-        {
-          isLoading: false,
-          data: responseJson,
-        },
-        function() {}
-      );
-    })
-    .catch(error => {
-      console.error(error);
-    }); 
-  }
+  // getPatientData () {
+  //   const {patient_ID, updateDate, symptoms} = this.state;
+  //   fetch('/api/covid/Patient/GetFollowUpData')
+  //   .then(response => response.json())
+  //   .then(responseJson => {
+  //     this.setState(
+  //       {
+  //         isLoading: false,
+  //         data: responseJson,
+  //       },
+  //       function() {}
+  //     );
+  //   })
+  //   .catch(error => {
+  //     console.error(error);
+  //   }); 
+  // }
 
-  updatePatientData () {
-    const {patient_ID, updateDate, symptoms} = this.state;
+  // updatePatientData () {
+  //   const {patient_ID, updateDate, symptoms} = this.state;
 
-    fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
-        method: 'PUT',
-        cors: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(
-          patient_ID,
-          updateDate,
-          symptoms,
-        ),
-      }) .then(response => response.json())
-      .then(responseJson => {
-          this.setState({
-              symptoms: responseJson,
-              isLoading: false,
-          })
-      })
-      .catch((error) => {
-        this.setState({
-          isLoading: false
-        })
-        console.error(error);
-      });
-  }
+  //   fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
+  //       method: 'PUT',
+  //       cors: 'no-cors',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(
+  //         patient_ID,
+  //         updateDate,
+  //         symptoms,
+  //       ),
+  //     }) .then(response => response.json())
+  //     .then(responseJson => {
+  //         this.setState({
+  //             symptoms: responseJson,
+  //             isLoading: false,
+  //         })
+  //     })
+  //     .catch((error) => {
+  //       this.setState({
+  //         isLoading: false
+  //       })
+  //       console.error(error);
+  //     });
+  // }
 
   render() {
     const {
@@ -287,13 +287,13 @@ class Symptoms extends React.Component {
         <Button
           title="Insert"
           color="#f194ff"
-          onPress={() => this.insertPatientData()}
+          // onPress={() => this.insertPatientData()}
         />
         <Text>   </Text>
          <Button
           title="Update"
           color="blue"
-          onPress={() => this.updatePatientData()}
+          // onPress={() => this.updatePatientData()}
         />
         </View>
       </Card>

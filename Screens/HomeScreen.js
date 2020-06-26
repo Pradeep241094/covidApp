@@ -31,37 +31,37 @@ class HomeScreen extends React.Component {
         } 
       };
     
-    async componentDidMount() {
-        this.setState({
-          isLoading: true,
-        }
-        );
+    // async componentDidMount() {
+    //     this.setState({
+    //       isLoading: true,
+    //     }
+    //     );
     
-        try {
-            this.getPatientData()
-        } 
-        catch (e) {
-          console.log(e)
-        } 
-      }
+    //     try {
+    //         this.getPatientData()
+    //     } 
+    //     catch (e) {
+    //       console.log(e)
+    //     } 
+    //   }
 
-      getPatientData () {
-        const {patient_ID, updateDate, symptoms} = this.state;
-        fetch('/api/covid/Patient/GetFollowUpData')
-        .then(response => response.json())
-        .then(responseJson => {
-          this.setState(
-            {
-              isLoading: false,
-              data: responseJson,
-            },
-            function() {}
-          );
-        })
-        .catch(error => {
-          console.error(error);
-        }); 
-      }
+    //   getPatientData () {
+    //     const {patient_ID, updateDate, symptoms} = this.state;
+    //     fetch('/api/covid/Patient/GetFollowUpData')
+    //     .then(response => response.json())
+    //     .then(responseJson => {
+    //       this.setState(
+    //         {
+    //           isLoading: false,
+    //           data: responseJson,
+    //         },
+    //         function() {}
+    //       );
+    //     })
+    //     .catch(error => {
+    //       console.error(error);
+    //     }); 
+    //   }
 
 
     changeDateFormat (changeDate) {
@@ -69,6 +69,7 @@ class HomeScreen extends React.Component {
         console.log(newDate);
         return newDate;
     }
+
     render () {
         const {updateDate, symptoms} = this.state;
         return (
