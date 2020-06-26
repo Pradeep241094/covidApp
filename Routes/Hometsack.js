@@ -9,6 +9,8 @@ import HomeScreen from '../Screens/HomeScreen';
 import Symptoms from '../Screens/Symptoms';
 import Header from '../Screens/Header';
 import { AppRegistry } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 const Stack = createStackNavigator()
 
@@ -29,7 +31,6 @@ return (
           iconName = focused ? 'ios-list-box' : 'ios-list';
         }
 
-        // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
       },
     })}
@@ -46,9 +47,24 @@ return (
 } 
 
 class Navigator extends React.Component {
-  state = {
-    isSignedUp : true,
+  state={
+    isSignedUp: false
   }
+  
+  componentDidMount(){
+    this.getData()
+  }
+
+async getData () {
+  await AsyncStorage.clear()
+  const value = await AsyncStorage.getItem('token')
+    if(value !== null) {
+      this.setState({ isSignedUp:true })
+    }
+    else { 
+      this.setState({ isSignedUp:false })
+    }
+}
 
   render() {
     return (
@@ -60,12 +76,9 @@ class Navigator extends React.Component {
       </>
       :
       <>
-        <Header/>
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Splash'>
-          <Stack.Screen 
-          
-          options={{headerShown: false}} name='Splash' component={Splashscreen} />
+          <Stack.Screen options={{headerShown: false}} name='Splash' component={Splashscreen} />
           <Stack.Screen options={{headerShown: false}} name='Auth' component={AuthScreen} />
           <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen} />
           <Stack.Screen options={{headerShown: false}} name="Record Symptoms" component={Symptoms} />

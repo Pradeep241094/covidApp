@@ -49,34 +49,34 @@ class Symptoms extends React.Component {
   //   } 
   // }
 
-  // insertPatientData () {
-  //     const {patient_ID, updateDate, symptoms} = this.state;
+  insertPatientData () {
+      const {patient_ID, updateDate, symptoms} = this.state;
 
-  //   fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
-  //       method: 'POST',
-  //       cors: 'no-cors',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(
-  //         patient_ID,
-  //         updateDate,
-  //         symptoms,
-  //       ),
-  //     }) .then(response => response.json())
-  //     .then(responseJson => {
-  //         this.setState({
-  //             symptoms: responseJson,
-  //             isLoading: false,
-  //         })
-  //     })
-  //     .catch((error) => {
-  //       this.setState({
-  //         isLoading: false
-  //       })
-  //       console.error(error);
-  //     });
-  // }
+    fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
+        method: 'POST',
+        cors: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          patient_ID,
+          updateDate,
+          symptoms,
+        ),
+      }) .then(response => response.json())
+      .then(responseJson => {
+          this.setState({
+              symptoms: responseJson,
+              isLoading: false,
+          })
+      })
+      .catch((error) => {
+        this.setState({
+          isLoading: false
+        })
+        console.error(error);
+      });
+  }
 
   // getPatientData () {
   //   const {patient_ID, updateDate, symptoms} = this.state;
