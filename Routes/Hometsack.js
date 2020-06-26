@@ -9,6 +9,7 @@ import HomeScreen from '../Screens/HomeScreen';
 import Symptoms from '../Screens/Symptoms';
 import Header from '../Screens/Header';
 import { AppRegistry } from "react-native";
+import PractionerView from '../Screens/PractionerView';
 
 const Stack = createStackNavigator()
 
@@ -40,6 +41,7 @@ return (
   >
     <Tab.Screen name="Home" component={HomeScreen}  style= {{fontSize: 20, }}/>
     <Tab.Screen name="Symptoms" component={Symptoms} />
+    <Tab.Screen name="PractionerView" component={PractionerView} />
   </Tab.Navigator>
 </NavigationContainer>
 )
