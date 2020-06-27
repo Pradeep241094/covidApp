@@ -19,7 +19,7 @@ class AuthScene extends Component {
     };
 
     sendCred = async (props) => {
-        fetch("https://mdfollowupauth.azurewebsites.net/api/Login/Patient", {
+        fetch("https://mdfollowupauth.azurewebsites.net/api/Login/Provider", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -31,10 +31,11 @@ class AuthScene extends Component {
         })
             .then(res => res.json())
             .then(async (data) => {
+                // Alert.alert("patient done")
                 await AsyncStorage.setItem('token', data.token)
                 this.props.navigation.navigate("Home", { username: this.state.username })
             })
-            .catch(async error => { Alert.alert('Your Username or Password is wrong. Please try again!')});
+            .catch(error => Alert.alert('Your Username or Password is wrong. Please try again!'))
 
     }
     async _loadFontsAsync() {
