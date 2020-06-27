@@ -37,7 +37,7 @@ const Tab = createBottomTabNavigator();
 class App extends React.Component {
 
   state={
-    isSignedUp: true
+    isSignedUp: false
   }
   
   componentDidMount(){
