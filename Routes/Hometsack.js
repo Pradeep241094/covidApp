@@ -11,23 +11,20 @@ import Header from '../Screens/Header';
 import { AppRegistry } from "react-native";
 import PractionerView from '../Screens/PractionerView';
 import AsyncStorage from '@react-native-community/async-storage';
-
 const Stack = createStackNavigator();
 class Navigator extends React.Component {
   state = {
     isSignedUp: false,
     tokenPresent: false,
-    Userrole: undefined,
   }
- componentDidMount() {
+  componentDidMount() {
     this.getData()
   }
-
   async getData() {
-    const value = JSON.parse(await AsyncStorage.getItem('token'))
-    console.log('value>>>>>>>>>inside function call>>>>>>>>>>>>>>>>>>', value)
-    if (value.data.token !== null) {
-      this.setState({ isSignedUp: true, tokenPresent: true})
+    await AsyncStorage.clear()
+    const value = await AsyncStorage.getItem('token')
+    if (value !== null) {
+      this.setState({ isSignedUp: true, tokenPresent: true })
     }
     else {
       this.setState({ isSignedUp: false, tokenPresent: false })
@@ -62,7 +59,5 @@ class Navigator extends React.Component {
     );
   }
 }
-
 AppRegistry.registerComponent("Navigator", () => Navigator);
-
 export default Navigator;

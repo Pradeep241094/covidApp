@@ -6,15 +6,21 @@ import { Card, Title, Paragraph, Button } from 'react-native-paper';
 import CardComponent from './CardComponent';
 import * as Progress from 'react-native-progress';
 import { SafeAreaView, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
 class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props)
+  }
   state = {
-    patient_ID: 123456,
-    updateDate: "2020-06-21T09:17:55.004Z",
-    userName: 'ABD123',
+    patient_ID: '',
+    followUPDay: undefined,
+    followUpStartDate: undefined,
+    healthCondition: undefined,
     symptoms: {
+      updateDate:undefined,
       feverOrChills: 1,
       cough: 5,
       headache: 3,
@@ -31,37 +37,59 @@ class HomeScreen extends React.Component {
     }
   };
 
-  // async componentDidMount() {
-  //     this.setState({
-  //       isLoading: true,
-  //     }
-  //     );
+  async componentDidMount() {
+    var { username } = this.props.route.params
+    console.log(username)
+    try {
+      const token = await AsyncStorage.getItem('token')
+      this.getPatientData(username, token)
+    }
+    catch (e) {
+      console.log(e)
+    }
 
-  //     try {
-  //         this.getPatientData()
-  //     } 
-  //     catch (e) {
-  //       console.log(e)
-  //     } 
-  //   }
+  }
 
-  //   getPatientData () {
-  //     const {patient_ID, updateDate, symptoms} = this.state;
-  //     fetch('/api/covid/Patient/GetFollowUpData')
-  //     .then(response => response.json())
-  //     .then(responseJson => {
-  //       this.setState(
-  //         {
-  //           isLoading: false,
-  //           data: responseJson,
-  //         },
-  //         function() {}
-  //       );
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     }); 
-  //   }
+  getPatientData(username, token) {
+    const patient_ID = username;
+    var { updateDate, symptoms } = this.state;
+    var url = `https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/FollowUpData/LastUpdated?patient_ID=${patient_ID}`;
+    fetch(url, {
+      method: 'GET',
+      // cors: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+    }).then( response => response.json())
+      .then ( responseJson => {
+          this.setState(
+          {
+            patient_ID: responseJson.patient_ID,
+            followUPDay: responseJson.followUPDay,
+            followUpStartDate: responseJson.followUpStartDate,
+            healthCondition: responseJson.healthCondition,
+            symptoms:{
+              updateDate:responseJson.symptomRecords.date,
+              feverOrChills:responseJson.symptomRecords.symptoms.feverOrChills,
+              cough: responseJson.symptomRecords.symptoms.cough,
+              headache: responseJson.symptomRecords.symptoms.headache,
+              shortnessOfBreath: responseJson.symptomRecords.symptoms.shortnessOfBreath,
+              fatigue: responseJson.symptomRecords.symptoms.fatigue,
+              muscleOrBodyAches: responseJson.symptomRecords.symptoms.muscleOrBodyAches,
+              soreThroat: responseJson.symptomRecords.symptoms.soreThroat,
+              lossOfTasteOrSmell: responseJson.symptomRecords.symptoms.lossOfTasteOrSmell,
+              congestionOrRunnyNose: responseJson.symptomRecords.symptoms.congestionOrRunnyNose,
+              nauseaOrVomiting: responseJson.symptomRecords.symptoms.nauseaOrVomiting,
+              diarrhea: responseJson.symptomRecords.symptoms.diarrhea,
+              symptomsAverage: responseJson.symptomRecords.symptoms.symptomsAverage,
+              }
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
 
   changeDateFormat(changeDate) {
@@ -71,9 +99,8 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-
-    const { navigation } = this.props;
     const { updateDate, symptoms } = this.state;
+    console.log(this.state)
     return (
       <>
         <SafeAreaView style={styles.container}>
@@ -81,7 +108,7 @@ class HomeScreen extends React.Component {
             <Card>
               <Card.Content>
                 <Title>Recorded Symptoms</Title>
-                <Paragraph>Updated Date: {this.changeDateFormat(updateDate)} </Paragraph>
+                <Paragraph>Updated Date: {this.changeDateFormat(symptoms.updateDate)} </Paragraph>
                 <Button
                   title="Go to Add Symptoms"
                   style={{ backgroundColor: 'blue' }}
@@ -93,39 +120,39 @@ class HomeScreen extends React.Component {
 
               <CardComponent
                 title='Fever or Chills'
-                value={symptoms.feverOrChills}
+                value={this.state.symptoms.feverOrChills}
               />
               <CardComponent
                 title='Cough'
-                value={symptoms.cough}
+                value={this.state.symptoms.cough}
               />
               <CardComponent
                 title='Congestion / Runny Nose'
-                value={symptoms.congestionOrRunnyNose}
+                value={this.state.symptoms.congestionOrRunnyNose}
               />
               <CardComponent
                 title='Headache'
-                value={symptoms.headache}
+                value={this.state.symptoms.headache}
               />
               <CardComponent
                 title='Nausea'
-                value={symptoms.nauseaOrVomiting}
+                value={this.state.symptoms.nauseaOrVomiting}
               />
               <CardComponent
                 title='Diarrhea'
-                value={symptoms.diarrhea}
+                value={this.state.symptoms.diarrhea}
               />
               <CardComponent
                 title='Loss of Taste / Smell'
-                value={symptoms.lossOfTasteOrSmell}
+                value={this.state.symptoms.lossOfTasteOrSmell}
               />
               <CardComponent
                 title='Sore throat'
-                value={symptoms.soreThroat}
+                value={this.state.symptoms.soreThroat}
               />
               <CardComponent
                 title='Fatigue'
-                value={symptoms.fatigue}
+                value={this.state.symptoms.fatigue}
               />
             </Card>
           </ScrollView>

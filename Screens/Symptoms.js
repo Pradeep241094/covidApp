@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 // import Slider from "react-native-slider";
 import {  Button } from 'react-native';
 import { Slider } from 'react-native-elements';
 import { AppRegistry, StyleSheet, View, Text } from "react-native";
 import { Card, Title } from 'react-native-paper';
 import {SafeAreaView, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 let customFonts = {
     'GoogleSans-Bold': require('../assets/fonts/GoogleSans-Bold.ttf'),
@@ -12,9 +13,14 @@ let customFonts = {
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
 };
 
-class Symptoms extends React.Component {
+class Symptoms extends Component {
+  constructor(props){
+    super(props)
+  }
+  token=undefined
+
   state = {
-    patient_ID: undefined,
+    patient_ID: '',
     updateDate: "2020-06-21T09:17:55.004Z",
     symptoms: {
       feverOrChills: 0,
@@ -33,30 +39,89 @@ class Symptoms extends React.Component {
     } 
   };
 
-  // async componentDidMount() {
-  //   this.setState({
-  //     isLoading: true,
-  //   }
-  //   );
-
-  //   try {
-  //       this.insertPatientData()
-  //       this.getPatientData()
-  //       this.updatePatientData()
-  //   } 
-  //   catch (e) {
-  //     console.log(e)
-  //   } 
-  // }
-
+  async componentDidMount() {
+        const {username} =this.props.route.params
+        try {
+            const token= await AsyncStorage.getItem('token')
+            this.getPatientData(username,token)
+            this.insertPatientData(username,token)
+            this.getPatientData(username,token)
+            this.updatePatientData(username,token)
+        } 
+        catch (e) {
+          console.log(e)
+        } 
+  }
+  
   insertPatientData () {
       const {patient_ID, updateDate, symptoms} = this.state;
-
-    fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
+      console.log(this.token_present)
+      fetch('https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/InsertFollowUpData', {
         method: 'POST',
+        // cors: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify(
+          patient_ID,
+          updateDate,
+          symptoms,
+        ),
+      }) .then(response => console.log(JSON.stringify(response)))
+      // .then(responseJson => {
+      //   console.log('Data added')
+      //     this.setState({
+      //         symptoms: responseJson,
+      //         isLoading: false,
+      //     })
+      // })
+      .catch((error) => {
+        this.setState({
+          isLoading: false
+        })
+        console.error(error);
+      });
+  }
+
+  getPatientData (username,token) {
+    const patient_ID=username;
+    var {updateDate, symptoms} = this.state;
+    console.log('tully',token)
+    var url=`https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/FollowUpData/LastUpdated?patient_ID=${patient_ID}`;
+    fetch(url,{
+    method: 'GET',
+    // cors: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+  }).then(response => response.json())
+    .then(responseJson => {
+      console.log(responseJson)
+      this.setState(
+        {
+          isLoading: false,
+          data: responseJson,
+        },
+        function() {}
+      );
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+  updatePatientData (username,token) {
+    const patient_ID = username
+    const {updateDate, symptoms} = this.state;
+
+    fetch('https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/UpdateFollowUpData', {
+        method: 'PUT',
         cors: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
         },
         body: JSON.stringify(
           patient_ID,
@@ -77,53 +142,6 @@ class Symptoms extends React.Component {
         console.error(error);
       });
   }
-
-  // getPatientData () {
-  //   const {patient_ID, updateDate, symptoms} = this.state;
-  //   fetch('/api/covid/Patient/GetFollowUpData')
-  //   .then(response => response.json())
-  //   .then(responseJson => {
-  //     this.setState(
-  //       {
-  //         isLoading: false,
-  //         data: responseJson,
-  //       },
-  //       function() {}
-  //     );
-  //   })
-  //   .catch(error => {
-  //     console.error(error);
-  //   }); 
-  // }
-
-  // updatePatientData () {
-  //   const {patient_ID, updateDate, symptoms} = this.state;
-
-  //   fetch('/api/covid/Patient/InsertFollowUpData?token=tokenID', {
-  //       method: 'PUT',
-  //       cors: 'no-cors',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(
-  //         patient_ID,
-  //         updateDate,
-  //         symptoms,
-  //       ),
-  //     }) .then(response => response.json())
-  //     .then(responseJson => {
-  //         this.setState({
-  //             symptoms: responseJson,
-  //             isLoading: false,
-  //         })
-  //     })
-  //     .catch((error) => {
-  //       this.setState({
-  //         isLoading: false
-  //       })
-  //       console.error(error);
-  //     });
-  // }
 
   render() {
     const {
@@ -287,7 +305,7 @@ class Symptoms extends React.Component {
         <Button
           title="Insert"
           color="#f194ff"
-          // onPress={() => this.insertPatientData()}
+          onPress={() => this.insertPatientData()}
         />
         <Text>   </Text>
          <Button
