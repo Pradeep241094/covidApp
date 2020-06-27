@@ -134,8 +134,7 @@ class HomeScreen extends React.Component {
       marginTop: 10,
     },
     scrollView: {
-      backgroundColor: 'pink',
-      marginHorizontal: 20,
+      marginHorizontal: 10,
     },
     text: {
       fontSize: 42,
