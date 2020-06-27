@@ -9,8 +9,8 @@ import PractionerView from './Screens/PractionerView';
 import HomeScreen from './Screens/HomeScreen';
 import Symptoms from './Screens/Symptoms';
 import { render } from 'react-dom';
-import AuthScene from './Screens/AuthScene';
-// import Splashscreen from './Screens/LoadingScene';
+import AuthScreen from './Screens/AuthScene';
+import Splashscreen from './Screens/LoadingScene';
 
 const HomeStack = createStackNavigator();
 function HomeStackScreen() {
@@ -37,7 +37,7 @@ const Tab = createBottomTabNavigator();
 class App extends React.Component {
 
   state={
-    isSignedUp: true
+    isSignedUp: false
   }
   
   componentDidMount(){
@@ -45,7 +45,7 @@ class App extends React.Component {
   }
 
 async getData () {
-  await AsyncStorage.clear()
+  // await AsyncStorage.clear()
   const value = await AsyncStorage.getItem('token')
     if(value !== null) {
       this.setState({ isSignedUp:true })
@@ -82,7 +82,7 @@ async getData () {
          },
       })}
   tabBarOptions={{
-      activeTintColor: 'blue',
+      activeTintColor: 'tomato',
       inactiveTintColor: 'gray',
       }}>
           <Tab.Screen name="Home" component={HomeStackScreen} />
@@ -92,7 +92,8 @@ async getData () {
       </>
       :
       <>
-       <AuthScene />
+       <AuthScreen />
+    {/* <View><Text>Hello World</Text></View> */}
     </>
     }
       </>
