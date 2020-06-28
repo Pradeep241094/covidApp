@@ -35,29 +35,31 @@ class PractionerStack extends React.Component {
   }
 
   render() {
-    const {  isSignedUp } = this.state;
+    const { isSignedUp } = this.state;
 
     return (
       <>
-            <>
-            <NavigationContainer independent={true}>
-            <Stack.Navigator>
-            {
-          isSignedUp ?
-            <>
-              <Stack.Screen name="PractionerView" component={PractionerView} />
-              <Stack.Screen name="CreatePatient" component={Signup} />
-              </>
-              :
-              <>
-              {/* <Stack.Screen name="Splash" component={Splashscreen} /> */}
-              <Stack.Screen name="PractionerAuth" component={PractionerAuth} />
-              <Stack.Screen name="PractionerView" component={PractionerView} />
-              <Stack.Screen name="CreatePatient" component={Signup} />
-              </>}
+        <>
+          <NavigationContainer independent={true}>
+            <Stack.Navigator screenOptions={{
+              headerShown: false
+            }}>
+              {
+                isSignedUp ?
+                  <>
+                    <Stack.Screen name="PractionerView" component={PractionerView} />
+                    <Stack.Screen name="CreatePatient" component={Signup} />
+                  </>
+                  :
+                  <>
+                    {/* <Stack.Screen name="Splash" component={Splashscreen} /> */}
+                    <Stack.Screen name="PractionerAuth" component={PractionerAuth} />
+                    <Stack.Screen name="PractionerView" component={PractionerView} />
+                    <Stack.Screen name="CreatePatient" component={Signup} />
+                  </>}
             </Stack.Navigator>
-            </NavigationContainer>
-            </>
+          </NavigationContainer>
+        </>
       </>
     );
   }

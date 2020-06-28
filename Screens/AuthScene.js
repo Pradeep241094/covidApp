@@ -4,6 +4,7 @@ import { Form, Item, Input, Button } from 'native-base';
 import { AppLoading } from 'expo';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Font from 'expo-font';
+import { Image, Appbar } from 'react-native-paper';
 
 let customFonts = {
     'GoogleSans-Bold': require('../assets/fonts/GoogleSans-Bold.ttf'),
@@ -34,7 +35,7 @@ class AuthScene extends Component {
                 await AsyncStorage.setItem('token', data.token)
                 this.props.navigation.navigate("Home", { username: this.state.username })
             })
-            .catch(async error => { Alert.alert('Your Username or Password is wrong. Please try again!')});
+            .catch(async error => { Alert.alert('Your Username or Password is wrong. Please try again!') });
 
     }
     async _loadFontsAsync() {
@@ -53,9 +54,8 @@ class AuthScene extends Component {
 
                     <View style={styles.middle}>
                         <Text style={styles.textContainer}>Welcome!</Text>
-
                         <View style={styles.formArea}>
-                            <Text style={[styles.textContainer, styles.signin]}>Sign in</Text>
+                            <Text style={[styles.textContainer, styles.signin]}>Patient Sign in</Text>
                             <Form style={styles.mainForm}>
                                 <Item style={styles.formItems}>
                                     <Input placeholder="Username" style={styles.Input} onChangeText={text => this.setState({ username: text })} />

@@ -29,10 +29,15 @@ function HomeStackScreen({navigation, route}) {
     navigation.setOptions({tabBarVisible : true})
   }
   return (
-    <HomeStack.Navigator initialRouteName="PatientLogin">
+    <HomeStack.Navigator screenOptions={{
+      headerShown: false
+    }} initialRouteName="Patient Login">
       <HomeStack.Screen
-        name="PatientLogin"
+        name="Patient Login"
         component={PatientView}
+        screenOptions={{
+          headerShown: false
+        }}
       />
     </HomeStack.Navigator>
   );
@@ -45,7 +50,11 @@ function SettingsStackScreen({navigation, route}) {
     navigation.setOptions({tabBarVisible : false})
   }
   return (
-    <SettingsStack.Navigator>
+    <SettingsStack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}
+    >
       <SettingsStack.Screen
         name="Doctor Login"
         component={DoctorView}

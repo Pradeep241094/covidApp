@@ -56,7 +56,7 @@ class PractionerAuth extends Component {
                         <Text style={styles.textContainer}>Welcome!</Text>
 
                         <View style={styles.formArea}>
-                            <Text style={[styles.textContainer, styles.signin]}>Sign in</Text>
+                            <Text style={[styles.textContainer, styles.signin]}>Doctor Sign in</Text>
                             <Form style={styles.mainForm}>
                                 <Item style={styles.formItems}>
                                     <Input placeholder="Username" style={styles.Input} onChangeText={text => this.setState({ username: text })} />

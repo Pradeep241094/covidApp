@@ -112,7 +112,7 @@ class PractionerView extends React.Component {
                       <DataTable.Cell >{patients.patientID}</DataTable.Cell>
                       <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
                       <DataTable.Cell onPress={() => console.log('Pressed')}>
-                        Click Here
+                       Call Patient
                     </DataTable.Cell>
                     </DataTable.Row>
                   ))}
@@ -145,7 +145,7 @@ class PractionerView extends React.Component {
                             <DataTable.Cell >{patients.patientID}</DataTable.Cell>
                             <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
                             <DataTable.Cell onPress={() => console.log('Pressed')}>
-                              Click Here
+                            Call Patient
                       </DataTable.Cell>
                           </DataTable.Row>
                         ))}
@@ -188,7 +188,7 @@ class PractionerView extends React.Component {
                       <DataTable.Cell >{patients.patientID}</DataTable.Cell>
                       <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
                       <DataTable.Cell onPress={() => console.log('Pressed')}>
-                        Click Here
+                      Call Patient
                     </DataTable.Cell>
                     </DataTable.Row>
                   ))}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { Form, Item, Input, Text, Button } from 'native-base';
+import { View, StyleSheet, Alert, Text} from 'react-native';
+import { Form, Item, Input, Button } from 'native-base';
 import { AppLoading } from 'expo';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Font from 'expo-font';
@@ -62,18 +62,15 @@ class AuthScene extends Component {
             return (
                 <View style={styles.container}>
                     <View style={styles.top}></View>
-
                     <View style={styles.middle}>
-                        <Text style={styles.textContainer}>Sign Up!</Text>
-
+                        <Text style={styles.textContainer}>Create Patient Account!</Text>
                         <View style={styles.formArea}>
-                            <Text style={[styles.textContainer, styles.signin]}>Sign in</Text>
                             <Form style={styles.mainForm}>
                                 <Item style={styles.formItems}>
-                                    <Input placeholder="Username" style={styles.Input} onChangeText={text => this.setState({ username: text })} />
+                                    <Input placeholder="Patient ID" style={styles.Input} onChangeText={text => this.setState({ username: text })} />
                                 </Item>
                                 <Item style={styles.formItems}>
-                                    <Input secureTextEntry placeholder="Password" style={styles.Input} onChangeText={text => this.setState({ password: text })} />
+                                    <Input secureTextEntry placeholder="Password for Patient" style={styles.Input} onChangeText={text => this.setState({ password: text })} />
                                 </Item>
                                 <View style={styles.Button}>
                                     <Button block style={styles.mainBtn} onPress={() => this.sendCred()}>

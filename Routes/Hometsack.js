@@ -1,4 +1,4 @@
-import React ,{Component}from 'react'
+import React, { Component } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -34,29 +34,31 @@ class Navigator extends Component {
   }
 
   render() {
-    const {navigtionProp} = this.props;
-    const {  isSignedUp } = this.state;
+    const { navigtionProp } = this.props;
+    const { isSignedUp } = this.state;
     return (
       <>
-            <>
-            <NavigationContainer independent={true} tabBarVisible={navigtionProp} >
-            <Stack.Navigator>
-            {
-          isSignedUp ?
-            <>
-              <Stack.Screen  name="Home" component={HomeScreen} />
-              <Stack.Screen name="Symptoms" component={Symptoms} />
-              </>
-              :
-              <>
-              <Stack.Screen name="Splash" component={Splashscreen} />
-              <Stack.Screen name="Auth" component={AuthScreen} />
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Symptoms" component={Symptoms} />
-              </>}
+        <>
+          <NavigationContainer independent={true} tabBarVisible={navigtionProp} >
+            <Stack.Navigator screenOptions={{
+              headerShown: false
+            }}>
+              {
+                isSignedUp ?
+                  <>
+                    <Stack.Screen name="Home" component={HomeScreen} />
+                    <Stack.Screen name="Symptoms" component={Symptoms} />
+                  </>
+                  :
+                  <>
+                    <Stack.Screen name="Splash" component={Splashscreen} />
+                    <Stack.Screen name="Auth" component={AuthScreen} />
+                    <Stack.Screen name="Home" component={HomeScreen} />
+                    <Stack.Screen name="Symptoms" component={Symptoms} />
+                  </>}
             </Stack.Navigator>
-            </NavigationContainer>
-            </>
+          </NavigationContainer>
+        </>
       </>
     );
   }
