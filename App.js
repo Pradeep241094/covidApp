@@ -11,17 +11,21 @@ const HomeStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 const Stack = createStackNavigator();
 
-function PatientView() {
+function PatientView({navigation,route}) {
+  if(route.name =='Patient view'){
+    navigation.setOptions({tabBarVisible:true})
+  }
   return <Navigator />;
 }
 
-function DoctorView() {
+function DoctorView({navigation}) {
+  navigation.setOptions({tabBarVisible: false})
   return <PractionerStack />;
 }
 
-function HomeStackScreen() {
+function HomeStackScreen({navigation,route}) {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator name='Patient View'>
       <HomeStack.Screen
         name="Patient Login"
         component={PatientView}
@@ -40,10 +44,10 @@ function SettingsStackScreen() {
     </SettingsStack.Navigator>
   );
 }
-function HomeTabs() {
+function HomeTabs({route}) {
+  console.log(route.state)
   return (
-    <Tab.Navigator 
-    >
+    <Tab.Navigator>
        <Tab.Screen name="Patient Login"  component={HomeStackScreen} />
         <Tab.Screen name="Doctor Login" component={SettingsStackScreen} />
     </Tab.Navigator>
