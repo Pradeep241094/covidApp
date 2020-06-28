@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Card, DataTable } from 'react-native-paper';
-import { ViewComponent, Button} from 'react-native';
+import { View, Button } from 'react-native';
 
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -80,20 +80,20 @@ class PractionerView extends React.Component {
   }
 
   changeDateFormat(date) {
-    var local = new Date(date).toISOString().slice(0,10);
+    var local = new Date(date).toISOString().slice(0, 10);
     return local
-}
+  }
   render() {
-    const { countOfDeterioratingPatients, countOfImprovingPatients, countOfStablePatients, stable, deteriorating , improving} = this.state;
+    const { countOfDeterioratingPatients, countOfImprovingPatients, countOfStablePatients, stable, deteriorating, improving } = this.state;
 
-    console.log('stable', stable[0].healthCondition);
+
     return (
       <>
         <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
           <Card.Title
             title="Health Condition: Deteriorating"
             subtitle={`Patients Suffering: ${countOfDeterioratingPatients}`}
-            subtitleStyle={{ fontSize: 15, color: 'blue' }}
+            subtitleStyle={{ fontSize: 15, color: '#84E35D' }}
           />
           <Card.Content>
             <SafeAreaView style={{ height: 150 }}>
@@ -104,18 +104,16 @@ class PractionerView extends React.Component {
                     <DataTable.Title >Date</DataTable.Title>
                     <DataTable.Title>Action</DataTable.Title>
                   </DataTable.Header>
-                 
-                   
-                    {deteriorating.map((patients) => (
-                       <DataTable.Row>
-                          {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
+                  {deteriorating.map((patients) => (
+                    <DataTable.Row>
+                      {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
                       <DataTable.Cell >{patients.patientID}</DataTable.Cell>
-                    <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
+                      <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
                       <DataTable.Cell onPress={() => console.log('Pressed')}>
                         Click Here
                     </DataTable.Cell>
-                     </DataTable.Row>
-                    ))}
+                    </DataTable.Row>
+                  ))}
                 </DataTable>
               </ScrollView>
             </SafeAreaView>
@@ -125,29 +123,46 @@ class PractionerView extends React.Component {
           <Card.Title
             title="Health Condition: Stable"
             subtitle={`Patients Suffering: ${countOfStablePatients}`}
-            subtitleStyle={{ fontSize: 15, color: 'blue' }}
+            subtitleStyle={{ fontSize: 15, color: '#84E35D' }}
           />
           <Card.Content>
-          <SafeAreaView style={{ height: 150 }}>
+            <SafeAreaView style={{ height: 150 }}>
               <ScrollView>
-            <DataTable>
-              <DataTable.Header>
-                <DataTable.Title>Patient ID</DataTable.Title>
-                <DataTable.Title >Date</DataTable.Title>
-                <DataTable.Title>Action</DataTable.Title>
-              </DataTable.Header>
-              {stable.map((patients) => (
-                       <DataTable.Row>
-                          {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
-                      <DataTable.Cell >{patients.patientID}</DataTable.Cell>
-                    <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
-                      <DataTable.Cell onPress={() => console.log('Pressed')}>
-                        Click Here
-                    </DataTable.Cell>
-                     </DataTable.Row>
-                    ))}
-            </DataTable>
-            </ScrollView>
+                <View>
+                  {
+                    countOfStablePatients ?
+                      <DataTable>
+                        <DataTable.Header>
+                          <DataTable.Title>Patient ID</DataTable.Title>
+                          <DataTable.Title >Date</DataTable.Title>
+                          <DataTable.Title>Action</DataTable.Title>
+                        </DataTable.Header>
+                        {stable.map((patients) => (
+                          <DataTable.Row>
+                            {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
+                            <DataTable.Cell >{patients.patientID}</DataTable.Cell>
+                            <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
+                            <DataTable.Cell onPress={() => console.log('Pressed')}>
+                              Click Here
+                      </DataTable.Cell>
+                          </DataTable.Row>
+                        ))}
+                      </DataTable> :
+                      <DataTable>
+                        <DataTable.Header>
+                          <DataTable.Title>Patient ID</DataTable.Title>
+                          <DataTable.Title >Date</DataTable.Title>
+                          <DataTable.Title>Action</DataTable.Title>
+                        </DataTable.Header>
+                        <DataTable.Row>
+
+                          <DataTable.Cell>No Data Available</DataTable.Cell>
+                        </DataTable.Row>
+                      </DataTable>
+                  }
+                </View>
+
+              </ScrollView>
             </SafeAreaView>
           </Card.Content>
         </Card>
@@ -155,36 +170,36 @@ class PractionerView extends React.Component {
           <Card.Title
             title="Health Condition: Improving"
             subtitle={`Patients Suffering: ${countOfImprovingPatients}`}
-            subtitleStyle={{ fontSize: 15, color: 'blue' }}
+            subtitleStyle={{ fontSize: 15, color: '#84E35D' }}
           />
           <Card.Content>
-          <SafeAreaView style={{ height: 150 }}>
+            <SafeAreaView style={{ height: 150 }}>
               <ScrollView>
-            <DataTable>
-              <DataTable.Header>
-                <DataTable.Title>Patient ID</DataTable.Title>
-                <DataTable.Title >Date</DataTable.Title>
-                <DataTable.Title>Action</DataTable.Title>
-              </DataTable.Header>
-              {improving.map((patients) => (
-                       <DataTable.Row>
+                <DataTable>
+                  <DataTable.Header>
+                    <DataTable.Title>Patient ID</DataTable.Title>
+                    <DataTable.Title >Date</DataTable.Title>
+                    <DataTable.Title>Action</DataTable.Title>
+                  </DataTable.Header>
+                  {improving.map((patients) => (
+                    <DataTable.Row>
                       <DataTable.Cell >{patients.patientID}</DataTable.Cell>
-                    <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
+                      <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
                       <DataTable.Cell onPress={() => console.log('Pressed')}>
                         Click Here
                     </DataTable.Cell>
-                     </DataTable.Row>
-                    ))}
-            </DataTable>
-            </ScrollView>
+                    </DataTable.Row>
+                  ))}
+                </DataTable>
+              </ScrollView>
             </SafeAreaView>
           </Card.Content>
         </Card>
         <Button
-                  title="Create Patient"
-                  style={{ backgroundColor: 'blue' }}
-                  color={'blue'}
-                  onPress={() => this.props.navigation.navigate('CreatePatient')}
+          title="Create Patient"
+          style={{ backgroundColor: '#84E35D' }}
+          color={'#84E35D'}
+          onPress={() => this.props.navigation.navigate('CreatePatient')}
         >Create Patient
         </Button>
       </>

@@ -4,11 +4,9 @@ import { Icon, Image, Slider } from 'react-native-elements';
 import Logo from '../assets/Logo.png';
 import { Card, Title, Paragraph, Button } from 'react-native-paper';
 import CardComponent from './CardComponent';
-import * as Progress from 'react-native-progress';
 import { SafeAreaView, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-
-
+import { BarChart, YAxis,XAxis, Grid } from 'react-native-svg-charts'
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -34,7 +32,8 @@ class HomeScreen extends React.Component {
       diarrhea: 0,
       symptomsAverage: 3,
       isLoading: false,
-    }
+    },
+    stats: []
   };
 
   async componentDidMount() {
@@ -43,6 +42,7 @@ class HomeScreen extends React.Component {
     try {
       const token = await AsyncStorage.getItem('token')
       this.getPatientData(username, token)
+      this.getStatistics(username, token)
     }
     catch (e) {
       console.log(e)
@@ -90,6 +90,32 @@ class HomeScreen extends React.Component {
       });
   }
 
+  getStatistics(username, token) {
+
+    const {stats} = this.state;
+    const patient_ID = username;
+    var url = `https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/FollowUpData/AllDays?patient_ID=${patient_ID}`;
+    fetch(url, {
+      method: 'GET',
+      // cors: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+    }).then( response => response.json())
+      .then ( responseJson => {
+        const data = responseJson;
+
+        console.log('>>>>>>>Data>>>>>>>>>>>>>',data)
+        this.setState({
+          stats: data.symptomAverageRecords
+        })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
 
   changeDateFormat(changeDate) {
     const newDate = Date(changeDate)
@@ -98,19 +124,59 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { updateDate, symptoms } = this.state;
-    console.log(this.state)
+    const { updateDate, symptoms, stats } = this.state;
+    const fill = '#84E35D';
+    const data = [1,2,3,4,5];
+    const contentInset = { top: 20, bottom: 20 }
+
+    console.log('stats>>>>>>>>>>>>>', stats);
+    const resultantStats = stats.map(statistics => {
+      return statistics.symptomAverage;
+    });
+
+    const xaxisData = stats.map(statistics => {
+      return statistics.followUPDay;
+    });
+
+    console.log(resultantStats);
     return (
       <>
         <SafeAreaView style={styles.container}>
           <ScrollView style={styles.scrollView}>
             <Card>
               <Card.Content>
+                <Text>Current Statistics</Text>
+                <View style={{ height: 200, flexDirection: 'row' }}>
+              <YAxis
+                    data={data}
+                    contentInset={contentInset}
+                    svg={{
+                        fill: 'grey',
+                        fontSize: 10,
+                    }}
+                    numberOfTicks={10}
+                />
+               <BarChart
+                    style={{ flex: 1, marginLeft: 16 }}
+                    data={resultantStats}
+                    svg={{ fill }}
+                    contentInset={contentInset}
+                >
+                    <Grid />
+                </BarChart>
+            </View>
+            <XAxis
+                    style={{ marginHorizontal: -10 }}
+                    data={xaxisData}
+                    formatLabel={(value, index) => index+1}
+                    contentInset={{ left: 10, right: 10 }}
+                    svg={{ fontSize: 10, fill: 'black' }}
+                />
                 <Title>Recorded Symptoms</Title>
                 <Paragraph>Updated Date: {this.changeDateFormat(symptoms.updateDate)} </Paragraph>
                 <Button
                   title="Go to Add Symptoms"
-                  style={{ backgroundColor: 'blue' }}
+                  style={{ backgroundColor: '#84E35D' }}
                   color={'white'}
                   onPress={() => this.props.navigation.navigate('Symptoms')}
                 >Add Symptoms

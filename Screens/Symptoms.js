@@ -170,7 +170,7 @@ class Symptoms extends Component {
           value={feverOrChills}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ feverOrChills: value })}
         />
@@ -181,7 +181,7 @@ class Symptoms extends Component {
           value={cough}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ cough: value })}
         />
@@ -192,7 +192,7 @@ class Symptoms extends Component {
           value={shortnessOfBreath}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ shortnessOfBreath: value })}
         />
@@ -203,7 +203,7 @@ class Symptoms extends Component {
           value={headache}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ headache: value })}
         />
@@ -214,7 +214,7 @@ class Symptoms extends Component {
           value={muscleOrBodyAches}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ muscleOrBodyAches: value })}
         />
@@ -225,7 +225,7 @@ class Symptoms extends Component {
           value={soreThroat}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ soreThroat: value })}
         />
@@ -236,7 +236,7 @@ class Symptoms extends Component {
           value={lossOfTasteOrSmell}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ lossOfTasteOrSmell: value })}
         />
@@ -247,7 +247,7 @@ class Symptoms extends Component {
           value={nauseaOrVomiting}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ nauseaOrVomiting: value })}
         />
@@ -258,7 +258,7 @@ class Symptoms extends Component {
           value={congestionOrRunnyNose}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ congestionOrRunnyNose: value })}
         />
@@ -269,7 +269,7 @@ class Symptoms extends Component {
           value={fatigue}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ fatigue: value })}
         />
@@ -280,7 +280,7 @@ class Symptoms extends Component {
           value={diarrhea}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ diarrhea: value })}
         />
@@ -291,7 +291,7 @@ class Symptoms extends Component {
           value={symptomsAverage}
           minimumValue={0}
           maximumValue={5}
-          thumbTintColor={"blue"}
+          thumbTintColor={"#84E35D"}
           step={1}
           onValueChange={value => this.setState({ symptomsAverage: value })}
         />
@@ -304,13 +304,13 @@ class Symptoms extends Component {
         <View style={styles.buttonContainer}>
         <Button
           title="Insert"
-          color="#f194ff"
+          color="#84E35D"
           onPress={() => this.insertPatientData()}
         />
         <Text>   </Text>
          <Button
           title="Update"
-          color="blue"
+          color="#84E35D"
           // onPress={() => this.updatePatientData()}
         />
         </View>
