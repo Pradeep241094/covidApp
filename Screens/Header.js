@@ -6,7 +6,7 @@ export default class Header extends React.Component {
   render() {
     return (
       <Appbar.Header
-      theme={{ colors: { primary: '#84E35D' } }}
+      theme={{ colors: { primary: '#1DDCAF' } }}
       >
          <Avatar.Image 
          size={48} 

@@ -22,34 +22,21 @@ class Symptoms extends Component {
     patient_ID: '',
     updateDate: "2020-06-21T09:17:55.004Z",
     symptom: {
-      feverOrChills: 0,
-      cough: 0,
-      headache: 0,
-      shortnessOfBreath: 0,
-      fatigue: 0,
-      muscleOrBodyAches: 0,
-      soreThroat: 0,
-      lossOfTasteOrSmell: 0,
-      congestionOrRunnyNose: 0,
-      nauseaOrVomiting: 0,
-      diarrhea: 0,
-      symptomsAverage: 0
+      feverOrChills: 1,
+      cough: 1,
+      headache: 1,
+      shortnessOfBreath: 1,
+      fatigue: 1,
+      muscleOrBodyAches: 1,
+      soreThroat: 1,
+      lossOfTasteOrSmell: 1,
+      congestionOrRunnyNose: 1,
+      nauseaOrVomiting: 1,
+      diarrhea: 1,
+      symptomsAverage: 1
     }
   };
 
-  // async componentDidMount() {
-  //   // const { username } = this.props.route.params
-  //   // try {
-  //   //   const token = await AsyncStorage.getItem('token')
-  //   //   // this.getPatientData(username, token)
-  //   //   // this.insertPatientData(username, token)
-  //   //   // this.getPatientData(username, token)
-  //   //   // this.updatePatientData(username, token)
-  //   // }
-  //   // catch (e) {
-  //   //   console.log(e)
-  //   // }
-  // }
 
   async insertPatientData() {
     const token = await AsyncStorage.getItem('token')
@@ -57,23 +44,41 @@ class Symptoms extends Component {
     const patient_ID = username
     console.log('SYmtoms', token)
     console.log('symtopms', username)
-    const { symptom } = this.state;
+    const {
+      feverOrChills,
+      cough,
+      headache,
+      shortnessOfBreath,
+      fatigue,
+      muscleOrBodyAches,
+      soreThroat,
+      lossOfTasteOrSmell,
+      congestionOrRunnyNose,
+      nauseaOrVomiting,
+      diarrhea,
+      symptomsAverage,
+    } = this.state;
+
     const data = {
       "patient_ID": username,
       "symptom": {
-        "feverOrChills": symptom.feverOrChills,
-        "cough": symptom.cough,
-        "shortnessOfBreath": symptom.shortnessOfBreath,
-        "fatigue": symptom.fatigue,
-        "muscleOrBodyAches": symptom.muscleOrBodyAches,
-        "headache": symptom.headache,
-        "lossOfTasteOrSmell": symptom.lossOfTasteOrSmell,
-        "soreThroat": symptom.soreThroat,
-        "congestionOrRunnyNose": symptom.congestionOrRunnyNose,
-        "nauseaOrVomiting": symptom.nauseaOrVomiting,
+        "feverOrChills": feverOrChills,
+        "cough": cough,
+        "shortnessOfBreath": shortnessOfBreath,
+        "fatigue": fatigue,
+        "muscleOrBodyAches": muscleOrBodyAches,
+        "headache": headache,
+        "lossOfTasteOrSmell": lossOfTasteOrSmell,
+        "soreThroat": soreThroat,
+        "congestionOrRunnyNose": congestionOrRunnyNose,
+        "nauseaOrVomiting": nauseaOrVomiting,
+        "diarrhea": diarrhea,
+        "symptomsAverage":  symptomsAverage
       }
+
+     
     }
-    console.log(symptom)
+
     fetch('https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/InsertFollowUpData', {
       method: 'POST',
       // cors: 'no-cors',
@@ -91,54 +96,42 @@ class Symptoms extends Component {
       });
   }
 
-  // getPatientData(username, token) {
-  //   const patient_ID = username;
-  //   var { updateDate, symptoms } = this.state;
-  //   console.log('tully', token)
-  //   var url = `https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/FollowUpData/LastUpdated?patient_ID=${patient_ID}`;
-  //   fetch(url, {
-  //     method: 'GET',
-  //     // cors: 'no-cors',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer ' + token,
-  //     },
-  //   }).then(response => response.json())
-  //     .then(responseJson => {
-  //       console.log(responseJson)
-  //       this.setState(
-  //         {
-  //           isLoading: false,
-  //           data: responseJson,
-  //         },
-  //         function () { }
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }
-
   async updatePatientData() {
     const token = await AsyncStorage.getItem('token')
     const { username } = this.props.route.params
     const patient_ID = username
     console.log('SYmtoms', token)
     console.log('symtopms', username)
-    const { symptom } = this.state;
+    const {
+      feverOrChills,
+      cough,
+      headache,
+      shortnessOfBreath,
+      fatigue,
+      muscleOrBodyAches,
+      soreThroat,
+      lossOfTasteOrSmell,
+      congestionOrRunnyNose,
+      nauseaOrVomiting,
+      diarrhea,
+      symptomsAverage,
+    } = this.state;
+
     const data = {
       "patient_ID": username,
       "symptom": {
-        "feverOrChills": symptom.feverOrChills,
-        "cough": symptom.cough,
-        "shortnessOfBreath": symptom.shortnessOfBreath,
-        "fatigue": symptom.fatigue,
-        "muscleOrBodyAches": symptom.muscleOrBodyAches,
-        "headache": symptom.headache,
-        "lossOfTasteOrSmell": symptom.lossOfTasteOrSmell,
-        "soreThroat": symptom.soreThroat,
-        "congestionOrRunnyNose": symptom.congestionOrRunnyNose,
-        "nauseaOrVomiting": symptom.nauseaOrVomiting,
+        "feverOrChills": feverOrChills,
+        "cough": cough,
+        "shortnessOfBreath": shortnessOfBreath,
+        "fatigue": fatigue,
+        "muscleOrBodyAches": muscleOrBodyAches,
+        "headache": headache,
+        "lossOfTasteOrSmell": lossOfTasteOrSmell,
+        "soreThroat": soreThroat,
+        "congestionOrRunnyNose": congestionOrRunnyNose,
+        "nauseaOrVomiting": nauseaOrVomiting,
+        "diarrhea": diarrhea,
+        "symptomsAverage":  symptomsAverage
       }
     }
 
@@ -185,9 +178,9 @@ class Symptoms extends Component {
               <Card.Content>
                 <Slider
                   value={feverOrChills}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ feverOrChills: value })}
                 />
@@ -196,9 +189,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={cough}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ cough: value })}
                 />
@@ -207,9 +200,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={shortnessOfBreath}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ shortnessOfBreath: value })}
                 />
@@ -218,9 +211,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={headache}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ headache: value })}
                 />
@@ -229,9 +222,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={muscleOrBodyAches}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ muscleOrBodyAches: value })}
                 />
@@ -240,9 +233,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={soreThroat}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ soreThroat: value })}
                 />
@@ -251,9 +244,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={lossOfTasteOrSmell}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ lossOfTasteOrSmell: value })}
                 />
@@ -262,9 +255,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={nauseaOrVomiting}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ nauseaOrVomiting: value })}
                 />
@@ -273,9 +266,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={congestionOrRunnyNose}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ congestionOrRunnyNose: value })}
                 />
@@ -284,9 +277,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={fatigue}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ fatigue: value })}
                 />
@@ -295,9 +288,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={diarrhea}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ diarrhea: value })}
                 />
@@ -306,9 +299,9 @@ class Symptoms extends Component {
                 </Text>
                 <Slider
                   value={symptomsAverage}
-                  minimumValue={0}
+                  minimumValue={1}
                   maximumValue={5}
-                  thumbTintColor={"blue"}
+                  thumbTintColor={"#1DDCAF"}
                   step={1}
                   onValueChange={value => this.setState({ symptomsAverage: value })}
                 />
@@ -321,13 +314,13 @@ class Symptoms extends Component {
             <View style={styles.buttonContainer}>
               <Button
                 title="Insert"
-                color="#f194ff"
+                color="#1DDCAF"
                 onPress={() => this.insertPatientData()}
               />
               <Text>   </Text>
               <Button
                 title="Update"
-                color="blue"
+                color="#1DDCAF"
               onPress={() => this.updatePatientData()}
               />
             </View>

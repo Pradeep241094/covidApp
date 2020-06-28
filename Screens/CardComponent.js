@@ -15,7 +15,7 @@ class CardComponent extends React.Component{
                     value={value}
                     maximumValue= {5}
                     disabled = {true}
-                    thumbTintColor={'#84E35D'}
+                    thumbTintColor={'#1DDCAF'}
                     style={{paddingBottom: 0, paddingTop: 0}}
                  />
             </Card.Content>

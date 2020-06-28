@@ -62,6 +62,8 @@ class HomeScreen extends React.Component {
       },
     }).then( response => response.json())
       .then ( responseJson => {
+
+        console.log('>>>>>>>&&&&&&&&&&&&&&&&&&&&&&&>>>>>>>>>',responseJson)
           this.setState(
           {
             patient_ID: responseJson.patient_ID,
@@ -125,7 +127,7 @@ class HomeScreen extends React.Component {
 
   render() {
     const { updateDate, symptoms, stats } = this.state;
-    const fill = '#84E35D';
+    const fill = '#1DDCAF';
     const data = [1,2,3,4,5];
     const contentInset = { top: 20, bottom: 20 }
 
@@ -176,7 +178,7 @@ class HomeScreen extends React.Component {
                 <Paragraph>Updated Date: {this.changeDateFormat(symptoms.updateDate)} </Paragraph>
                 <Button
                   title="Go to Add Symptoms"
-                  style={{ backgroundColor: '#84E35D' }}
+                  style={{ backgroundColor: '#1DDCAF' }}
                   color={'white'}
                   onPress={() => this.props.navigation.navigate('Symptoms',{ username: this.state.patient_ID })}
                 >Add Symptoms

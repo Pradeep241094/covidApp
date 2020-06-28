@@ -95,7 +95,7 @@ class PractionerView extends React.Component {
           <Card.Title
             title="Health Condition: Deteriorating"
             subtitle={`Patients Suffering: ${countOfDeterioratingPatients}`}
-            subtitleStyle={{ fontSize: 15, color: '#84E35D' }}
+            subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
           />
           <Card.Content>
             <SafeAreaView style={{ height: 150 }}>
@@ -125,7 +125,7 @@ class PractionerView extends React.Component {
           <Card.Title
             title="Health Condition: Stable"
             subtitle={`Patients Suffering: ${countOfStablePatients}`}
-            subtitleStyle={{ fontSize: 15, color: '#84E35D' }}
+            subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
           />
           <Card.Content>
             <SafeAreaView style={{ height: 150 }}>
@@ -172,7 +172,7 @@ class PractionerView extends React.Component {
           <Card.Title
             title="Health Condition: Improving"
             subtitle={`Patients Suffering: ${countOfImprovingPatients}`}
-            subtitleStyle={{ fontSize: 15, color: '#84E35D' }}
+            subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
           />
           <Card.Content>
             <SafeAreaView style={{ height: 150 }}>
@@ -199,8 +199,8 @@ class PractionerView extends React.Component {
         </Card>
         <Button
           title="Create Patient"
-          style={{ backgroundColor: '#84E35D' }}
-          color={'#84E35D'}
+          style={{ backgroundColor: '#1DDCAF' }}
+          color={'#1DDCAF'}
           onPress={() => this.props.navigation.navigate('CreatePatient')}
         >Create Patient
         </Button>
