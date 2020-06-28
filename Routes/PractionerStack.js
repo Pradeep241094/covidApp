@@ -13,6 +13,9 @@ import PractionerView from '../Screens/PractionerView';
 import AsyncStorage from '@react-native-community/async-storage';
 const Stack = createStackNavigator();
 class PractionerStack extends React.Component {
+  constructor(props) {
+    super(props)
+  }
   state = {
     isSignedUp: false,
     tokenPresent: false,
@@ -43,12 +46,14 @@ class PractionerStack extends React.Component {
           isSignedUp ?
             <>
               <Stack.Screen name="PractionerView" component={PractionerView} />
+              <Stack.Screen name="CreatePatient" component={Symptoms} />
               </>
               :
               <>
               {/* <Stack.Screen name="Splash" component={Splashscreen} /> */}
               <Stack.Screen name="PractionerAuth" component={PractionerAuth} />
               <Stack.Screen name="PractionerView" component={PractionerView} />
+              <Stack.Screen name="CreatePatient" component={Symptoms} />
               </>}
             </Stack.Navigator>
             </NavigationContainer>

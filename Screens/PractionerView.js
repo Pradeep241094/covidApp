@@ -1,84 +1,99 @@
 import * as React from 'react';
 import { Card, DataTable } from 'react-native-paper';
-import { View } from 'react-native';
+import { ViewComponent, Button} from 'react-native';
 
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 class PractionerView extends React.Component {
+  constructor(props) {
+    super(props)
+  }
   state = {
-    "countOfStablePatients": 0,
-    "countOfImprovingPatients": 0,
-    "countOfDeterioratingPatients": 0,
-    "stable": [
+    countOfStablePatients: 0,
+    countOfImprovingPatients: 0,
+    countOfDeterioratingPatients: 0,
+    stable: [
       {
-        "patientID": "string",
-        "lastUpdateDate": "2020-06-27T22:43:09.523Z",
-        "healthCondition": "string"
+        patientID: "string",
+        lastUpdateDate: "2020-06-27T22:43:09.523Z",
+        healthCondition: "string"
       }
     ],
-    "improving": [
+    improving: [
       {
-        "patientID": "string",
-        "lastUpdateDate": "2020-06-27T22:43:09.523Z",
-        "healthCondition": "string"
+        patientID: "string",
+        lastUpdateDate: "2020-06-27T22:43:09.523Z",
+        healthCondition: "string"
       }
     ],
-    "deteriorating": [
+    deteriorating: [
       {
-        "patientID": "string",
-        "lastUpdateDate": "2020-06-27T22:43:09.523Z",
-        "healthCondition": "string"
+        patientID: "string",
+        lastUpdateDate: "2020-06-27T22:43:09.523Z",
+        healthCondition: "string"
       }
     ]
 
-  }
-  GetpatientGroups() {
-      const patient_ID = username;
-      var { updateDate, symptoms } = this.state;
-      fetch('https://mdfollowupcovidapi.azurewebsites.net/api/covid/MedicalProvider/GetPatientGroups', {
-        method: 'GET',
-        // cors: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token,
-        },
-      }).then(response => response.json())
-        .then(responseJson => {
-          this.setState(
-            {
-              patient_ID: responseJson.patient_ID,
-              followUPDay: responseJson.followUPDay,
-              followUpStartDate: responseJson.followUpStartDate,
-              healthCondition: responseJson.healthCondition,
-              symptoms: {
-                updateDate: responseJson.symptomRecords.date,
-                feverOrChills: responseJson.symptomRecords.symptoms.feverOrChills,
-                cough: responseJson.symptomRecords.symptoms.cough,
-                headache: responseJson.symptomRecords.symptoms.headache,
-                shortnessOfBreath: responseJson.symptomRecords.symptoms.shortnessOfBreath,
-                fatigue: responseJson.symptomRecords.symptoms.fatigue,
-                muscleOrBodyAches: responseJson.symptomRecords.symptoms.muscleOrBodyAches,
-                soreThroat: responseJson.symptomRecords.symptoms.soreThroat,
-                lossOfTasteOrSmell: responseJson.symptomRecords.symptoms.lossOfTasteOrSmell,
-                congestionOrRunnyNose: responseJson.symptomRecords.symptoms.congestionOrRunnyNose,
-                nauseaOrVomiting: responseJson.symptomRecords.symptoms.nauseaOrVomiting,
-                diarrhea: responseJson.symptomRecords.symptoms.diarrhea,
-                symptomsAverage: responseJson.symptomRecords.symptoms.symptomsAverage,
-              }
-            });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+  };
+  async componentDidMount() {
+    var { username } = this.props.route.params
+    console.log(username)
+    try {
+      const token = await AsyncStorage.getItem('token')
+      this.getpatientGroups(username, token)
+    }
+    catch (e) {
+      console.log(e)
     }
 
+  }
+
+
+
+  getpatientGroups(username, token) {
+    var { updateDate, symptoms } = this.state;
+    fetch('https://mdfollowupcovidapi.azurewebsites.net/api/covid/MedicalProvider/GetPatientGroups', {
+      method: 'GET',
+      // cors: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+    }).then(response => response.json())
+      .then(responseJson => {
+        console.log('responseJson', responseJson)
+        const data = responseJson;
+        this.setState({
+          countOfStablePatients: data.countOfStablePatients,
+          countOfImprovingPatients: data.countOfImprovingPatients,
+          countOfDeterioratingPatients: data.countOfDeterioratingPatients,
+          stable: data.stable,
+          improving: data.improving,
+          deteriorating: data.deteriorating,
+        })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  changeDateFormat(date) {
+    var local = new Date(date).toISOString().slice(0,10);
+    return local
+}
   render() {
+    const { countOfDeterioratingPatients, countOfImprovingPatients, countOfStablePatients, stable, deteriorating , improving} = this.state;
+
+    console.log('stable', stable[0].healthCondition);
     return (
       <>
         <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
           <Card.Title
-            title="Health Condition: Detoriating"
-            subtitle="Number: 1267"
+            title="Health Condition: Deteriorating"
+            subtitle={`Patients Suffering: ${countOfDeterioratingPatients}`}
+            subtitleStyle={{ fontSize: 15, color: 'blue' }}
           />
           <Card.Content>
             <SafeAreaView style={{ height: 150 }}>
@@ -89,42 +104,18 @@ class PractionerView extends React.Component {
                     <DataTable.Title >Date</DataTable.Title>
                     <DataTable.Title>Action</DataTable.Title>
                   </DataTable.Header>
-                  <DataTable.Row>
-                    <DataTable.Cell>12344</DataTable.Cell>
-                    <DataTable.Cell>'10-05-2020'</DataTable.Cell>
-                    <DataTable.Cell onPress={() => console.log('Pressed')}>
-                      Click Here
-   </DataTable.Cell>
-                  </DataTable.Row>
-
-                  <DataTable.Row>
-                    <DataTable.Cell>12344</DataTable.Cell>
-                    <DataTable.Cell>10-21-2020</DataTable.Cell>
-                    <DataTable.Cell onPress={() => console.log('Pressed')}>
-                      Click Here
-   </DataTable.Cell>
-                  </DataTable.Row>
-                  <DataTable.Row>
-                    <DataTable.Cell>12344</DataTable.Cell>
-                    <DataTable.Cell>10-21-2020</DataTable.Cell>
-                    <DataTable.Cell onPress={() => console.log('Pressed')}>
-                      Click Here
-   </DataTable.Cell>
-                  </DataTable.Row>
-                  <DataTable.Row>
-                    <DataTable.Cell>12344</DataTable.Cell>
-                    <DataTable.Cell>10-21-2020</DataTable.Cell>
-                    <DataTable.Cell onPress={() => console.log('Pressed')}>
-                      Click Here
-   </DataTable.Cell>
-                  </DataTable.Row>
-                  <DataTable.Row>
-                    <DataTable.Cell>12344</DataTable.Cell>
-                    <DataTable.Cell>10-21-2020</DataTable.Cell>
-                    <DataTable.Cell onPress={() => console.log('Pressed')} style={{}}>
-                      Click Here
-   </DataTable.Cell>
-                  </DataTable.Row>
+                 
+                   
+                    {deteriorating.map((patients) => (
+                       <DataTable.Row>
+                          {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
+                      <DataTable.Cell >{patients.patientID}</DataTable.Cell>
+                    <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
+                      <DataTable.Cell onPress={() => console.log('Pressed')}>
+                        Click Here
+                    </DataTable.Cell>
+                     </DataTable.Row>
+                    ))}
                 </DataTable>
               </ScrollView>
             </SafeAreaView>
@@ -132,103 +123,70 @@ class PractionerView extends React.Component {
         </Card>
         <Card style={{ marginBottom: 10 }}>
           <Card.Title
-            title="Health Condition: Detoriating"
-            subtitle="Number: 1267"
+            title="Health Condition: Stable"
+            subtitle={`Patients Suffering: ${countOfStablePatients}`}
+            subtitleStyle={{ fontSize: 15, color: 'blue' }}
           />
           <Card.Content>
+          <SafeAreaView style={{ height: 150 }}>
+              <ScrollView>
             <DataTable>
               <DataTable.Header>
                 <DataTable.Title>Patient ID</DataTable.Title>
                 <DataTable.Title >Date</DataTable.Title>
                 <DataTable.Title>Action</DataTable.Title>
               </DataTable.Header>
-              <DataTable.Row>
-                <DataTable.Cell>12344</DataTable.Cell>
-                <DataTable.Cell>'10-05-2020'</DataTable.Cell>
-                <DataTable.Cell onPress={() => console.log('Pressed')}>
-                  Click Here
-   </DataTable.Cell>
-              </DataTable.Row>
-
-              <DataTable.Row>
-                <DataTable.Cell>12344</DataTable.Cell>
-                <DataTable.Cell>10-21-2020</DataTable.Cell>
-                <DataTable.Cell onPress={() => console.log('Pressed')}>
-                  Click Here
-   </DataTable.Cell>
-              </DataTable.Row>
+              {stable.map((patients) => (
+                       <DataTable.Row>
+                          {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
+                      <DataTable.Cell >{patients.patientID}</DataTable.Cell>
+                    <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
+                      <DataTable.Cell onPress={() => console.log('Pressed')}>
+                        Click Here
+                    </DataTable.Cell>
+                     </DataTable.Row>
+                    ))}
             </DataTable>
+            </ScrollView>
+            </SafeAreaView>
           </Card.Content>
         </Card>
         <Card style={{ marginBottom: 10 }}>
           <Card.Title
-            title="Health Condition: Detoriating"
-            subtitle="Number: 1267"
+            title="Health Condition: Improving"
+            subtitle={`Patients Suffering: ${countOfImprovingPatients}`}
+            subtitleStyle={{ fontSize: 15, color: 'blue' }}
           />
           <Card.Content>
+          <SafeAreaView style={{ height: 150 }}>
+              <ScrollView>
             <DataTable>
               <DataTable.Header>
                 <DataTable.Title>Patient ID</DataTable.Title>
                 <DataTable.Title >Date</DataTable.Title>
                 <DataTable.Title>Action</DataTable.Title>
               </DataTable.Header>
-              <DataTable.Row>
-                <DataTable.Cell>12344</DataTable.Cell>
-                <DataTable.Cell>'10-05-2020'</DataTable.Cell>
-                <DataTable.Cell onPress={() => console.log('Pressed')}>
-                  Click Here
-   </DataTable.Cell>
-              </DataTable.Row>
-
-              <DataTable.Row>
-                <DataTable.Cell>12344</DataTable.Cell>
-                <DataTable.Cell>10-21-2020</DataTable.Cell>
-                <DataTable.Cell onPress={() => console.log('Pressed')}>
-                  Click Here
-   </DataTable.Cell>
-              </DataTable.Row>
+              {improving.map((patients) => (
+                       <DataTable.Row>
+                      <DataTable.Cell >{patients.patientID}</DataTable.Cell>
+                    <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
+                      <DataTable.Cell onPress={() => console.log('Pressed')}>
+                        Click Here
+                    </DataTable.Cell>
+                     </DataTable.Row>
+                    ))}
             </DataTable>
+            </ScrollView>
+            </SafeAreaView>
           </Card.Content>
         </Card>
-        <Card style={{ marginBottom: 10 }}>
-          <Card.Title
-            title="Health Condition: Detoriating"
-            subtitle="Number: 1267"
-          />
-          <Card.Content>
-            <DataTable>
-              <DataTable.Header>
-                <DataTable.Title>Patient ID</DataTable.Title>
-                <DataTable.Title >Date</DataTable.Title>
-                <DataTable.Title>Action</DataTable.Title>
-              </DataTable.Header>
-              <DataTable.Row>
-                <DataTable.Cell>12344</DataTable.Cell>
-                <DataTable.Cell>'10-05-2020'</DataTable.Cell>
-                <DataTable.Cell onPress={() => console.log('Pressed')}>
-                  Click Here
-   </DataTable.Cell>
-              </DataTable.Row>
-
-              <DataTable.Row>
-                <DataTable.Cell>12344</DataTable.Cell>
-                <DataTable.Cell>10-21-2020</DataTable.Cell>
-                <DataTable.Cell onPress={() => console.log('Pressed')}>
-                  Click Here
-   </DataTable.Cell>
-              </DataTable.Row>
-
-              <DataTable.Pagination
-                page={1}
-                numberOfPages={3}
-                onPageChange={page => {
-                  console.log(page);
-                }}
-                label="1-2 of 6"
-              />
-            </DataTable>
-          </Card.Content>
-        </Card>
+        <Button
+                  title="Create Patient"
+                  style={{ backgroundColor: 'blue' }}
+                  color={'blue'}
+                  onPress={() => this.props.navigation.navigate('CreatePatient')}
+        >Create Patient
+        </Button>
       </>
 
     )

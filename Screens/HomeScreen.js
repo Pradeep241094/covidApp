@@ -47,7 +47,6 @@ class HomeScreen extends React.Component {
     catch (e) {
       console.log(e)
     }
-
   }
 
   getPatientData(username, token) {
