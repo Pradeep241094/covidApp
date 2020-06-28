@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, AppRegistry } from 'react-native';
-import { Icon, Image, Slider } from 'react-native-elements';
 import Logo from '../assets/Logo.png';
 import { Card, Title, Paragraph, Button } from 'react-native-paper';
 import CardComponent from './CardComponent';
 import { SafeAreaView, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { BarChart, YAxis,XAxis, Grid } from 'react-native-svg-charts';
-import Header from './Header';
+import { BarChart, YAxis, XAxis, Grid } from 'react-native-svg-charts';
+import { Avatar } from "react-native-elements";
+import { color } from 'react-native-reanimated';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class HomeScreen extends React.Component {
     followUpStartDate: undefined,
     healthCondition: undefined,
     symptoms: {
-      updateDate:undefined,
+      updateDate: undefined,
       feverOrChills: 1,
       cough: 5,
       headache: 3,
@@ -38,7 +38,7 @@ class HomeScreen extends React.Component {
   };
 
   async componentDidMount() {
-    var { username } = this.props.route.params
+    var { username } = this.props.route.params;
     console.log(username)
     try {
       const token = await AsyncStorage.getItem('token')
@@ -61,19 +61,19 @@ class HomeScreen extends React.Component {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token,
       },
-    }).then( response => response.json())
-      .then ( responseJson => {
+    }).then(response => response.json())
+      .then(responseJson => {
 
-        console.log('>>>>>>>&&&&&&&&&&&&&&&&&&&&&&&>>>>>>>>>',responseJson)
-          this.setState(
+        console.log('>>>>>>>&&&&&&&&&&&&&&&&&&&&&&&>>>>>>>>>', responseJson)
+        this.setState(
           {
             patient_ID: responseJson.patient_ID,
             followUPDay: responseJson.followUPDay,
             followUpStartDate: responseJson.followUpStartDate,
             healthCondition: responseJson.healthCondition,
-            symptoms:{
-              updateDate:responseJson.symptomRecords.date,
-              feverOrChills:responseJson.symptomRecords.symptoms.feverOrChills,
+            symptoms: {
+              updateDate: responseJson.symptomRecords.date,
+              feverOrChills: responseJson.symptomRecords.symptoms.feverOrChills,
               cough: responseJson.symptomRecords.symptoms.cough,
               headache: responseJson.symptomRecords.symptoms.headache,
               shortnessOfBreath: responseJson.symptomRecords.symptoms.shortnessOfBreath,
@@ -85,7 +85,7 @@ class HomeScreen extends React.Component {
               nauseaOrVomiting: responseJson.symptomRecords.symptoms.nauseaOrVomiting,
               diarrhea: responseJson.symptomRecords.symptoms.diarrhea,
               symptomsAverage: responseJson.symptomRecords.symptoms.symptomsAverage,
-              }
+            }
           });
       })
       .catch((error) => {
@@ -95,7 +95,7 @@ class HomeScreen extends React.Component {
 
   getStatistics(username, token) {
 
-    const {stats} = this.state;
+    const { stats } = this.state;
     const patient_ID = username;
     var url = `https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/FollowUpData/AllDays?patient_ID=${patient_ID}`;
     fetch(url, {
@@ -105,11 +105,10 @@ class HomeScreen extends React.Component {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token,
       },
-    }).then( response => response.json())
-      .then ( responseJson => {
+    }).then(response => response.json())
+      .then(responseJson => {
         const data = responseJson;
-
-        console.log('>>>>>>>Data>>>>>>>>>>>>>',data)
+        console.log('>>>>>>>Data>>>>>>>>>>>>>', data)
         this.setState({
           stats: data.symptomAverageRecords
         })
@@ -119,17 +118,16 @@ class HomeScreen extends React.Component {
       });
   }
 
-
   changeDateFormat(changeDate) {
     const newDate = Date(changeDate)
     console.log(newDate);
     return newDate;
   }
-
+  
   render() {
-    const { updateDate, symptoms, stats } = this.state;
+    const { updateDate, symptoms, stats, followUPDay,healthCondition  } = this.state;
     const fill = '#1DDCAF';
-    const data = [1,2,3,4,5];
+    const data = [1, 2, 3, 4, 5];
     const contentInset = { top: 20, bottom: 20 }
 
     console.log('stats>>>>>>>>>>>>>', stats);
@@ -142,46 +140,67 @@ class HomeScreen extends React.Component {
     });
 
     console.log(resultantStats);
+
+    const { username } = this.props.route.params;
+    const healthConditionUpdated = healthCondition
     return (
       <>
         <SafeAreaView style={styles.container}>
           <ScrollView style={styles.scrollView}>
             <Card>
+              <Card.Content style={{ backgroundColor: '#E8E8E8', marginBottom: 10, paddingBottom: 10}}>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                <Avatar
+                  size="large"
+                  overlayContainerStyle={{backgroundColor: 'white', color: 'black'}}
+                  title={`DAY ${followUPDay}`}
+                  titleStyle={{color: 'black', fontSize: 18, fontWeight: 'bold' }}
+                  onPress={() => console.log("Works!")}
+                  activeOpacity={0.7}
+                />
+                <View>
+               
+                <Title style={{marginLeft: 30, fontSize: 12}}>PATIENT ID: {username}</Title>
+                <Title style={{marginLeft: 30, fontSize: 20, textTransform: 'uppercase'}}>{`Condition: ${healthCondition}`}</Title>
+                </View>
+               
+                </View>
+              </Card.Content>
               <Card.Content>
-                <Text>Current Statistics</Text>
+                <Title>Health Progress</Title>
                 <View style={{ height: 200, flexDirection: 'row' }}>
-              <YAxis
+                  <YAxis
                     data={data}
                     contentInset={contentInset}
                     svg={{
-                        fill: 'grey',
-                        fontSize: 10,
+                      fill: 'grey',
+                      fontSize: 10,
                     }}
                     numberOfTicks={10}
-                />
-               <BarChart
+                  />
+                  <BarChart
                     style={{ flex: 1, marginLeft: 16 }}
                     data={resultantStats}
                     svg={{ fill }}
                     contentInset={contentInset}
-                >
+                  >
                     <Grid />
-                </BarChart>
-            </View>
-            <XAxis
-                    style={{ marginHorizontal: 15 }}
-                    data={xaxisData}
-                    formatLabel={(value, index) => index+1}
-                    contentInset={{ left: 10, right: 10 }}
-                    svg={{ fontSize: 10, fill: 'black' }}
+                  </BarChart>
+                </View>
+                <XAxis
+                  style={{ marginHorizontal: 15, marginTop: 5 }}
+                  data={xaxisData}
+                  formatLabel={(value, index) => index + 1}
+                  contentInset={{ left: 10, right: 10 }}
+                  svg={{ fontSize: 10, fill: 'black' }}
                 />
                 <Title>Recorded Symptoms</Title>
-                <Paragraph>Updated Date: {this.changeDateFormat(symptoms.updateDate)} </Paragraph>
+                <Paragraph>Date: {this.changeDateFormat(symptoms.updateDate)} </Paragraph>
                 <Button
                   title="Go to Add Symptoms"
                   style={{ backgroundColor: '#1DDCAF' }}
                   color={'white'}
-                  onPress={() => this.props.navigation.navigate('Symptoms',{ username: this.state.patient_ID })}
+                  onPress={() => this.props.navigation.navigate('Symptoms', { username: this.state.patient_ID })}
                 >Add Symptoms
                 </Button>
               </Card.Content>

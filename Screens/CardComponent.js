@@ -10,7 +10,7 @@ class CardComponent extends React.Component{
         return (
             <Card style={{paddingBottom: 0, paddingTop: 0, marginTop: 0, marginBottom: 0}}>
             <Card.Content style={{paddingBottom: 0, paddingTop: 0, marginTop: 0, marginBottom: 0}}>
-                <Title style={{paddingBottom: 0, paddingTop: 0}}>{title} : {value}</Title>
+                <Title style={{paddingBottom: 0, paddingTop: 0}}>{`${title} : ${value}/5`}</Title>
               <Slider
                     value={value}
                     maximumValue= {5}
