@@ -11,30 +11,33 @@ let customFonts = {
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
 };
 class AuthScene extends Component {
-
+    token=''
     state = {
         fontsLoaded: false,
         username: "",
         password: "",
     };
-
     sendCred = async (props) => {
+        console.log('token>>>>>',this.token)
         fetch("https://mdfollowupcovidapi.azurewebsites.net/api/covid/MedicalProvider/EnlistPatient", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
+                'Authorization': 'Bearer ' + this.token,
 
             },
             body: JSON.stringify({
                 "userID": this.state.username,
-                "password": this.state.password
+                "password": this.state.password,
+                "listingDate":'',
             })
         })
             .then(res => res.json())
             .then(async (data) => {
-                await AsyncStorage.setItem('token', data.token)
-                this.props.navigation.navigate("Home", { username: this.state.username })
+                this.setState({ username:null})
+                this.setState({ password:null})
+                Alert.alert('Successful!')
+                
             })
             .catch(async error => { Alert.alert('Sign Up Error. Please try again!')});
 
@@ -44,8 +47,15 @@ class AuthScene extends Component {
         this.setState({ fontsLoaded: true });
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this._loadFontsAsync();
+        try {
+            this.token = await AsyncStorage.getItem('token')
+          }
+          catch (e) {
+            console.log(e)
+          }
+
     }
     render() {
         if (this.state.fontsLoaded) {
@@ -67,7 +77,7 @@ class AuthScene extends Component {
                                 </Item>
                                 <View style={styles.Button}>
                                     <Button block style={styles.mainBtn} onPress={() => this.sendCred()}>
-                                        <Text style={styles.btnText}>Login</Text>
+                                        <Text style={styles.btnText}>Sign Up!</Text>
                                     </Button>
                                 </View>
                             </Form>

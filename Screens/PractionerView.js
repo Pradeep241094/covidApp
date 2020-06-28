@@ -89,6 +89,8 @@ class PractionerView extends React.Component {
     console.log('stable', stable[0].healthCondition);
     return (
       <>
+      <ScrollView>
+      <SafeAreaView>
         <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
           <Card.Title
             title="Health Condition: Deteriorating"
@@ -187,6 +189,8 @@ class PractionerView extends React.Component {
                   onPress={() => this.props.navigation.navigate('CreatePatient')}
         >Create Patient
         </Button>
+        </SafeAreaView>
+        </ScrollView>
       </>
 
     )
