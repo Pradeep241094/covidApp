@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{Component}from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,7 +12,9 @@ import { AppRegistry } from "react-native";
 import PractionerView from '../Screens/PractionerView';
 import AsyncStorage from '@react-native-community/async-storage';
 const Stack = createStackNavigator();
-class Navigator extends React.Component {
+
+class Navigator extends Component {
+
   state = {
     isSignedUp: false,
     tokenPresent: false,
@@ -34,7 +36,6 @@ class Navigator extends React.Component {
   render() {
     const {navigtionProp} = this.props;
     const {  isSignedUp } = this.state;
-
     return (
       <>
             <>

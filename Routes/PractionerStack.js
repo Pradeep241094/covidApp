@@ -4,12 +4,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import PractionerAuth from '../Screens/Practioner_authscreen';
-import Splashscreen from '../Screens/LoadingScene';
-import HomeScreen from '../Screens/HomeScreen';
 import Symptoms from '../Screens/Symptoms';
 import Header from '../Screens/Header';
+import Signup from '../Screens/signup'
 import { AppRegistry } from "react-native";
 import PractionerView from '../Screens/PractionerView';
+
 import AsyncStorage from '@react-native-community/async-storage';
 const Stack = createStackNavigator();
 class PractionerStack extends React.Component {
@@ -46,14 +46,14 @@ class PractionerStack extends React.Component {
           isSignedUp ?
             <>
               <Stack.Screen name="PractionerView" component={PractionerView} />
-              <Stack.Screen name="CreatePatient" component={Symptoms} />
+              <Stack.Screen name="CreatePatient" component={Signup} />
               </>
               :
               <>
               {/* <Stack.Screen name="Splash" component={Splashscreen} /> */}
               <Stack.Screen name="PractionerAuth" component={PractionerAuth} />
               <Stack.Screen name="PractionerView" component={PractionerView} />
-              <Stack.Screen name="CreatePatient" component={Symptoms} />
+              <Stack.Screen name="CreatePatient" component={Signup} />
               </>}
             </Stack.Navigator>
             </NavigationContainer>

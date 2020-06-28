@@ -178,7 +178,7 @@ class HomeScreen extends React.Component {
                   title="Go to Add Symptoms"
                   style={{ backgroundColor: '#84E35D' }}
                   color={'white'}
-                  onPress={() => this.props.navigation.navigate('Symptoms')}
+                  onPress={() => this.props.navigation.navigate('Symptoms',{ username: this.state.patient_ID })}
                 >Add Symptoms
                 </Button>
               </Card.Content>

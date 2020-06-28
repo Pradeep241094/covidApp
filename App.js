@@ -55,8 +55,7 @@ function SettingsStackScreen({navigation, route}) {
 export default function App() {
   return (
     <NavigationContainer>
-    <Tab.Navigator 
-    >
+    <Tab.Navigator>
       <Tab.Screen name="Patient Login"  component={HomeStackScreen} />
       <Tab.Screen name="Doctor Login" component={SettingsStackScreen} />
     </Tab.Navigator>
