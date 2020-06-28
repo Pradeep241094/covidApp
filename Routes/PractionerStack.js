@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AuthScreen from '../Screens/AuthScene';
+import PractionerAuth from '../Screens/Practioner_authscreen';
 import Splashscreen from '../Screens/LoadingScene';
 import HomeScreen from '../Screens/HomeScreen';
 import Symptoms from '../Screens/Symptoms';
@@ -12,7 +12,7 @@ import { AppRegistry } from "react-native";
 import PractionerView from '../Screens/PractionerView';
 import AsyncStorage from '@react-native-community/async-storage';
 const Stack = createStackNavigator();
-class Navigator extends React.Component {
+class PractionerStack extends React.Component {
   state = {
     isSignedUp: false,
     tokenPresent: false,
@@ -37,20 +37,18 @@ class Navigator extends React.Component {
     return (
       <>
             <>
-            <NavigationContainer independent={true} >
+            <NavigationContainer independent={true}>
             <Stack.Navigator>
             {
           isSignedUp ?
             <>
-              <Stack.Screen  name="Home" component={HomeScreen} />
-              <Stack.Screen name="Symptoms" component={Symptoms} />
+              <Stack.Screen name="PractionerView" component={PractionerView} />
               </>
               :
               <>
-              <Stack.Screen name="Splash" component={Splashscreen} />
-              <Stack.Screen name="Auth" component={AuthScreen} />
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Symptoms" component={Symptoms} />
+              {/* <Stack.Screen name="Splash" component={Splashscreen} /> */}
+              <Stack.Screen name="PractionerAuth" component={PractionerAuth} />
+              <Stack.Screen name="PractionerView" component={PractionerView} />
               </>}
             </Stack.Navigator>
             </NavigationContainer>
@@ -59,5 +57,5 @@ class Navigator extends React.Component {
     );
   }
 }
-AppRegistry.registerComponent("Navigator", () => Navigator);
-export default Navigator;
+AppRegistry.registerComponent("PractionerStack", () => PractionerStack);
+export default PractionerStack;

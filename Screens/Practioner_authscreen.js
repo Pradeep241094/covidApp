@@ -10,7 +10,7 @@ let customFonts = {
     'GoogleSans-Medium': require('../assets/fonts/GoogleSans-Medium.ttf'),
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
 };
-class AuthScene extends Component {
+class PractionerAuth extends Component {
 
     state = {
         fontsLoaded: false,
@@ -33,7 +33,7 @@ class AuthScene extends Component {
             .then(async (data) => {
                 // Alert.alert("patient done")
                 await AsyncStorage.setItem('token', data.token)
-                this.props.navigation.navigate("Home", { username: this.state.username })
+                this.props.navigation.navigate("PractionerView", { username: this.state.username })
             })
             .catch(error => Alert.alert('Your Username or Password is wrong. Please try again!'))
 
@@ -81,7 +81,7 @@ class AuthScene extends Component {
     }
 }
 
-export default AuthScene;
+export default PractionerAuth;
 
 const styles = StyleSheet.create({
     container: {
