@@ -32,12 +32,13 @@ class Navigator extends React.Component {
   }
 
   render() {
+    const {navigtionProp} = this.props;
     const {  isSignedUp } = this.state;
 
     return (
       <>
             <>
-            <NavigationContainer independent={true} >
+            <NavigationContainer independent={true} tabBarVisible={navigtionProp} >
             <Stack.Navigator>
             {
           isSignedUp ?

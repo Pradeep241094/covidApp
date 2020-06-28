@@ -12,25 +12,37 @@ const SettingsStack = createStackNavigator();
 const Stack = createStackNavigator();
 
 function PatientView() {
-  return <Navigator />;
+  return <Navigator/>;
 }
 
 function DoctorView() {
+
   return <PractionerStack />;
 }
 
-function HomeStackScreen() {
+function HomeStackScreen({navigation, route}) {
+  console.log('navigation>>>>>>>>>>>>', route.state)
+  if (route.state && route.state.index > 1) {
+    navigation.setOptions({tabBarVisible : false})
+  } else {
+    navigation.setOptions({tabBarVisible : true})
+  }
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator initialRouteName="PatientLogin">
       <HomeStack.Screen
-        name="Patient Login"
+        name="PatientLogin"
         component={PatientView}
       />
     </HomeStack.Navigator>
   );
 }
 
-function SettingsStackScreen() {
+function SettingsStackScreen({navigation, route}) {
+   if (route.state && route.state.index > 0) {
+    navigation.setOptions({tabBarVisible : true})
+  } else {
+    navigation.setOptions({tabBarVisible : false})
+  }
   return (
     <SettingsStack.Navigator>
       <SettingsStack.Screen
@@ -40,22 +52,14 @@ function SettingsStackScreen() {
     </SettingsStack.Navigator>
   );
 }
-function HomeTabs() {
-  return (
-    <Tab.Navigator 
-    >
-       <Tab.Screen name="Patient Login"  component={HomeStackScreen} />
-        <Tab.Screen name="Doctor Login" component={SettingsStackScreen} />
-    </Tab.Navigator>
-  );
-}
-
 export default function App() {
   return (
     <NavigationContainer>
-       <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeTabs} />
-    </Stack.Navigator>
+    <Tab.Navigator 
+    >
+      <Tab.Screen name="Patient Login"  component={HomeStackScreen} />
+      <Tab.Screen name="Doctor Login" component={SettingsStackScreen} />
+    </Tab.Navigator>
     </NavigationContainer>
    
   );
