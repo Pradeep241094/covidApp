@@ -6,7 +6,8 @@ import { Card, Title, Paragraph, Button } from 'react-native-paper';
 import CardComponent from './CardComponent';
 import { SafeAreaView, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { BarChart, YAxis,XAxis, Grid } from 'react-native-svg-charts'
+import { BarChart, YAxis,XAxis, Grid } from 'react-native-svg-charts';
+import Header from './Header';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -168,7 +169,7 @@ class HomeScreen extends React.Component {
                 </BarChart>
             </View>
             <XAxis
-                    style={{ marginHorizontal: -10 }}
+                    style={{ marginHorizontal: 15 }}
                     data={xaxisData}
                     formatLabel={(value, index) => index+1}
                     contentInset={{ left: 10, right: 10 }}

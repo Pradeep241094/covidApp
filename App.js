@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Navigator from './Routes/Hometsack';
 import PractionerStack from './Routes/PractionerStack';
+import Header from './Screens/Header';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -54,13 +55,15 @@ function SettingsStackScreen({navigation, route}) {
 }
 export default function App() {
   return (
+    <>
+    <Header />
     <NavigationContainer>
     <Tab.Navigator>
       <Tab.Screen name="Patient Login"  component={HomeStackScreen} />
       <Tab.Screen name="Doctor Login" component={SettingsStackScreen} />
     </Tab.Navigator>
     </NavigationContainer>
-   
+    </>
   );
 }
 

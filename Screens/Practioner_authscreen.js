@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { Form, Item, Input, Text, Button } from 'native-base';
+import { View, StyleSheet, Alert, Text } from 'react-native';
+import { Form, Item, Input, Button } from 'native-base';
 import { AppLoading } from 'expo';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Font from 'expo-font';
