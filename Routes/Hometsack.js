@@ -36,6 +36,7 @@ class Navigator extends Component {
   render() {
     const { navigtionProp } = this.props;
     const { isSignedUp } = this.state;
+    
     return (
       <>
         <>

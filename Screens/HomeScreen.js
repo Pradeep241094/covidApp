@@ -123,6 +123,11 @@ class HomeScreen extends React.Component {
     console.log(newDate);
     return newDate;
   }
+
+  logout () {
+    AsyncStorage.clear();
+    this.props.navigation.navigate('Auth');
+  }
   
   render() {
     const { updateDate, symptoms, stats, followUPDay,healthCondition  } = this.state;
@@ -147,7 +152,7 @@ class HomeScreen extends React.Component {
       <>
         <SafeAreaView style={styles.container}>
           <ScrollView style={styles.scrollView}>
-            <Card>
+            <Card style={{marginBottom: 10}}>
               <Card.Content style={{ backgroundColor: '#E8E8E8', marginBottom: 10, paddingBottom: 10}}>
                 <View style={{flex: 1, flexDirection: 'row'}}>
                 <Avatar
@@ -242,6 +247,15 @@ class HomeScreen extends React.Component {
                 value={this.state.symptoms.fatigue}
               />
             </Card>
+            <View style={{marginLeft: 10, marginRight: 10, marginBottom: 10}}>
+              <Button
+                  title="Logout"
+                  style={{ backgroundColor: '#1DDCAF' }}
+                  color={'white'}
+                  onPress={() =>this.logout()}
+                >Logout
+                </Button>
+              </View> 
           </ScrollView>
         </SafeAreaView>
       </>

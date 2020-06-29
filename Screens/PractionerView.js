@@ -82,17 +82,31 @@ class PractionerView extends React.Component {
     var local = new Date(date).toISOString().slice(0, 10);
     return local
   }
+
+  logout () {
+    AsyncStorage.clear();
+    this.props.navigation.navigate('PractionerAuth');
+  }
+
   render() {
     const { countOfDeterioratingPatients, countOfImprovingPatients, countOfStablePatients, stable, deteriorating, improving } = this.state;
     const { username } = this.props.route.params;
 
     return (
       <>
+      <View style={{marginRight: 10, marginLeft: 10}}>
       <ScrollView>
       <SafeAreaView>
         <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
-        <Card.Content style={{backgroundColor: '#1DDCAF'}}>
-          <Title>Provider ID: {username}</Title>
+        <Card.Content>
+          <Title style={{ marginBottom: 10}}>Provider ID: {username}</Title>
+          <Button
+          title="Create Patient"
+          style={{ backgroundColor: '#1DDCAF', marginLeft: 10, marginRight: 10 }}
+          color={'#1DDCAF'}
+          onPress={() => this.props.navigation.navigate('CreatePatient')}
+        >Create Patient
+        </Button>
         </Card.Content>
           <Card.Title
             title="Health Condition: Deteriorating"
@@ -214,17 +228,19 @@ class PractionerView extends React.Component {
           />
         </TouchableOpacity>
         </Card>
+        <View style={{marginLeft: 10, marginRight: 10}}>
         <Button
-          title="Create Patient"
+          title="Logout"
           style={{ backgroundColor: '#1DDCAF' }}
           color={'#1DDCAF'}
-          onPress={() => this.props.navigation.navigate('CreatePatient')}
-        >Create Patient
+          onPress={() => this.logout()}
+        >Logout
         </Button>
+        </View>
         </SafeAreaView>
         </ScrollView>
+        </View>
       </>
-
     )
   }
 }
