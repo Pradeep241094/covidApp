@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Alert, Text } from 'react-native';
+import { View, StyleSheet, Alert, Text} from 'react-native';
 import { Form, Item, Input, Button } from 'native-base';
 import { AppLoading } from 'expo';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Font from 'expo-font';
-import { Image, Appbar } from 'react-native-paper';
 
 let customFonts = {
     'GoogleSans-Bold': require('../assets/fonts/GoogleSans-Bold.ttf'),
@@ -12,30 +11,35 @@ let customFonts = {
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
 };
 class AuthScene extends Component {
-
+    token=''
     state = {
         fontsLoaded: false,
         username: "",
         password: "",
     };
-
     sendCred = async (props) => {
-        fetch("https://mdfollowupauth.azurewebsites.net/api/Login/Patient", {
+        console.log('token>>>>>',this.token)
+        fetch("https://mdfollowupcovidapi.azurewebsites.net/api/covid/MedicalProvider/EnlistPatient", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.token,
+
             },
             body: JSON.stringify({
                 "userID": this.state.username,
-                "password": this.state.password
+                "password": this.state.password,
+                "listingDate":'',
             })
         })
             .then(res => res.json())
             .then(async (data) => {
-                await AsyncStorage.setItem('token', data.token)
-                this.props.navigation.navigate("Home", { username: this.state.username })
+                this.setState({ username:null})
+                this.setState({ password:null})
+                Alert.alert('Successful!')
+                
             })
-            .catch(async error => { Alert.alert('Your Username or Password is wrong. Please try again!') });
+            .catch(async error => { Alert.alert('Sign Up Error. Please try again!')});
 
     }
     async _loadFontsAsync() {
@@ -43,29 +47,34 @@ class AuthScene extends Component {
         this.setState({ fontsLoaded: true });
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this._loadFontsAsync();
+        try {
+            this.token = await AsyncStorage.getItem('token')
+          }
+          catch (e) {
+            console.log(e)
+          }
+
     }
     render() {
         if (this.state.fontsLoaded) {
             return (
                 <View style={styles.container}>
                     <View style={styles.top}></View>
-
                     <View style={styles.middle}>
-                        <Text style={styles.textContainer}>Welcome!</Text>
+                        <Text style={styles.textContainer}>Create Patient Account!</Text>
                         <View style={styles.formArea}>
-                            <Text style={[styles.textContainer, styles.signin]}>Patient Sign in</Text>
                             <Form style={styles.mainForm}>
                                 <Item style={styles.formItems}>
-                                    <Input placeholder="Username" style={styles.Input} onChangeText={text => this.setState({ username: text })} />
+                                    <Input placeholder="Patient ID" style={styles.Input} onChangeText={text => this.setState({ username: text })} />
                                 </Item>
                                 <Item style={styles.formItems}>
-                                    <Input secureTextEntry placeholder="Password" style={styles.Input} onChangeText={text => this.setState({ password: text })} />
+                                    <Input secureTextEntry placeholder="Password for Patient" style={styles.Input} onChangeText={text => this.setState({ password: text })} />
                                 </Item>
                                 <View style={styles.Button}>
                                     <Button block style={styles.mainBtn} onPress={() => this.sendCred()}>
-                                        <Text style={styles.btnText}>Login</Text>
+                                        <Text style={styles.btnText}>Sign Up!</Text>
                                     </Button>
                                 </View>
                             </Form>

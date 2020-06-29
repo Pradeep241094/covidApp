@@ -4,14 +4,13 @@ import { Form, Item, Input, Button } from 'native-base';
 import { AppLoading } from 'expo';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Font from 'expo-font';
-import { Image, Appbar } from 'react-native-paper';
 
 let customFonts = {
     'GoogleSans-Bold': require('../assets/fonts/GoogleSans-Bold.ttf'),
     'GoogleSans-Medium': require('../assets/fonts/GoogleSans-Medium.ttf'),
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
 };
-class AuthScene extends Component {
+class PractionerAuth extends Component {
 
     state = {
         fontsLoaded: false,
@@ -20,7 +19,7 @@ class AuthScene extends Component {
     };
 
     sendCred = async (props) => {
-        fetch("https://mdfollowupauth.azurewebsites.net/api/Login/Patient", {
+        fetch("https://mdfollowupauth.azurewebsites.net/api/Login/Provider", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -32,10 +31,11 @@ class AuthScene extends Component {
         })
             .then(res => res.json())
             .then(async (data) => {
+                // Alert.alert("patient done")
                 await AsyncStorage.setItem('token', data.token)
-                this.props.navigation.navigate("Home", { username: this.state.username })
+                this.props.navigation.navigate("PractionerView", { username: this.state.username })
             })
-            .catch(async error => { Alert.alert('Your Username or Password is wrong. Please try again!') });
+            .catch(error => Alert.alert('Your Username or Password is wrong. Please try again!'))
 
     }
     async _loadFontsAsync() {
@@ -54,8 +54,9 @@ class AuthScene extends Component {
 
                     <View style={styles.middle}>
                         <Text style={styles.textContainer}>Welcome!</Text>
+
                         <View style={styles.formArea}>
-                            <Text style={[styles.textContainer, styles.signin]}>Patient Sign in</Text>
+                            <Text style={[styles.textContainer, styles.signin]}>Medical Provider Sign in</Text>
                             <Form style={styles.mainForm}>
                                 <Item style={styles.formItems}>
                                     <Input placeholder="Username" style={styles.Input} onChangeText={text => this.setState({ username: text })} />
@@ -80,7 +81,7 @@ class AuthScene extends Component {
     }
 }
 
-export default AuthScene;
+export default PractionerAuth;
 
 const styles = StyleSheet.create({
     container: {

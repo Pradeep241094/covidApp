@@ -1,19 +1,78 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Navigator from "./Routes/Hometsack";
+import * as React from 'react';
+import { View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import Navigator from './Routes/Hometsack';
+import PractionerStack from './Routes/PractionerStack';
+import Header from './Screens/Header';
 
+const Tab = createBottomTabNavigator();
+const HomeStack = createStackNavigator();
+const SettingsStack = createStackNavigator();
+const Stack = createStackNavigator();
 
-export default function App() {
+function PatientView() {
+  return <Navigator/>;
+}
+
+function DoctorView() {
+
+  return <PractionerStack />;
+}
+
+function HomeStackScreen({navigation, route}) {
+  console.log('navigation>>>>>>>>>>>>', route.state)
+  if (route.state && route.state.index > 1) {
+    navigation.setOptions({tabBarVisible : false})
+  } else {
+    navigation.setOptions({tabBarVisible : true})
+  }
   return (
-    Navigator()
+    <HomeStack.Navigator screenOptions={{
+      headerShown: false
+    }} initialRouteName="Patient Login">
+      <HomeStack.Screen
+        name="Patient Login"
+        component={PatientView}
+        screenOptions={{
+          headerShown: false
+        }}
+      />
+    </HomeStack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+function SettingsStackScreen({navigation, route}) {
+   if (route.state && route.state.index > 0) {
+    navigation.setOptions({tabBarVisible : true})
+  } else {
+    navigation.setOptions({tabBarVisible : false})
+  }
+  return (
+    <SettingsStack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}
+    >
+      <SettingsStack.Screen
+        name="Provider Login"
+        component={DoctorView}
+      />
+    </SettingsStack.Navigator>
+  );
+}
+export default function App() {
+  return (
+    <>
+    <Header />
+    <NavigationContainer>
+    <Tab.Navigator>
+      <Tab.Screen name="Patient Login"  component={HomeStackScreen} />
+      <Tab.Screen name="Provider Login" component={SettingsStackScreen} />
+    </Tab.Navigator>
+    </NavigationContainer>
+    </>
+  );
+}
+

@@ -1,20 +1,21 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AuthScreen from '../Screens/AuthScene';
-import Splashscreen from '../Screens/LoadingScene';
-import HomeScreen from '../Screens/HomeScreen';
+import PractionerAuth from '../Screens/Practioner_authscreen';
 import Symptoms from '../Screens/Symptoms';
 import Header from '../Screens/Header';
+import Signup from '../Screens/signup'
 import { AppRegistry } from "react-native";
 import PractionerView from '../Screens/PractionerView';
+
 import AsyncStorage from '@react-native-community/async-storage';
 const Stack = createStackNavigator();
-
-class Navigator extends Component {
-
+class PractionerStack extends React.Component {
+  constructor(props) {
+    super(props)
+  }
   state = {
     isSignedUp: false,
     tokenPresent: false,
@@ -34,28 +35,27 @@ class Navigator extends Component {
   }
 
   render() {
-    const { navigtionProp } = this.props;
     const { isSignedUp } = this.state;
-    
+
     return (
       <>
         <>
-          <NavigationContainer independent={true} tabBarVisible={navigtionProp} >
+          <NavigationContainer independent={true}>
             <Stack.Navigator screenOptions={{
               headerShown: false
             }}>
               {
                 isSignedUp ?
                   <>
-                    <Stack.Screen name="Home" component={HomeScreen} />
-                    <Stack.Screen name="Symptoms" component={Symptoms} />
+                    <Stack.Screen name="PractionerView" component={PractionerView} />
+                    <Stack.Screen name="CreatePatient" component={Signup} />
                   </>
                   :
                   <>
-                    <Stack.Screen name="Splash" component={Splashscreen} />
-                    <Stack.Screen name="Auth" component={AuthScreen} />
-                    <Stack.Screen name="Home" component={HomeScreen} />
-                    <Stack.Screen name="Symptoms" component={Symptoms} />
+                    {/* <Stack.Screen name="Splash" component={Splashscreen} /> */}
+                    <Stack.Screen name="PractionerAuth" component={PractionerAuth} />
+                    <Stack.Screen name="PractionerView" component={PractionerView} />
+                    <Stack.Screen name="CreatePatient" component={Signup} />
                   </>}
             </Stack.Navigator>
           </NavigationContainer>
@@ -64,5 +64,5 @@ class Navigator extends Component {
     );
   }
 }
-AppRegistry.registerComponent("Navigator", () => Navigator);
-export default Navigator;
+AppRegistry.registerComponent("PractionerStack", () => PractionerStack);
+export default PractionerStack;
