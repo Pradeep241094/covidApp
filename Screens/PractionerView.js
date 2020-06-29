@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Card, DataTable } from 'react-native-paper';
-import { View, Button } from 'react-native';
-
+import { View, Button, TouchableOpacity,  Image } from 'react-native';
+import {  Title, Paragraph } from 'react-native-paper';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -38,7 +38,8 @@ class PractionerView extends React.Component {
 
   };
   async componentDidMount() {
-    var { username } = this.props.route.params
+    var { username } = this.props.route.params;
+
     console.log(username)
     try {
       const token = await AsyncStorage.getItem('token')
@@ -49,8 +50,6 @@ class PractionerView extends React.Component {
     }
 
   }
-
-
 
   getpatientGroups(username, token) {
     var { updateDate, symptoms } = this.state;
@@ -85,16 +84,19 @@ class PractionerView extends React.Component {
   }
   render() {
     const { countOfDeterioratingPatients, countOfImprovingPatients, countOfStablePatients, stable, deteriorating, improving } = this.state;
-
+    const { username } = this.props.route.params;
 
     return (
       <>
       <ScrollView>
       <SafeAreaView>
         <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
+        <Card.Content style={{backgroundColor: '#1DDCAF'}}>
+          <Title>Provider ID: {username}</Title>
+        </Card.Content>
           <Card.Title
             title="Health Condition: Deteriorating"
-            subtitle={`Patients Suffering: ${countOfDeterioratingPatients}`}
+            subtitle={`Number of Patients: ${countOfDeterioratingPatients}`}
             subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
           />
           <Card.Content>
@@ -112,7 +114,7 @@ class PractionerView extends React.Component {
                       <DataTable.Cell >{patients.patientID}</DataTable.Cell>
                       <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
                       <DataTable.Cell onPress={() => console.log('Pressed')}>
-                        Click Here
+                       Call Patient
                     </DataTable.Cell>
                     </DataTable.Row>
                   ))}
@@ -124,7 +126,7 @@ class PractionerView extends React.Component {
         <Card style={{ marginBottom: 10 }}>
           <Card.Title
             title="Health Condition: Stable"
-            subtitle={`Patients Suffering: ${countOfStablePatients}`}
+            subtitle={`Number of Patients: ${countOfStablePatients}`}
             subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
           />
           <Card.Content>
@@ -145,7 +147,7 @@ class PractionerView extends React.Component {
                             <DataTable.Cell >{patients.patientID}</DataTable.Cell>
                             <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
                             <DataTable.Cell onPress={() => console.log('Pressed')}>
-                              Click Here
+                            Call Patient
                       </DataTable.Cell>
                           </DataTable.Row>
                         ))}
@@ -163,7 +165,6 @@ class PractionerView extends React.Component {
                       </DataTable>
                   }
                 </View>
-
               </ScrollView>
             </SafeAreaView>
           </Card.Content>
@@ -171,7 +172,7 @@ class PractionerView extends React.Component {
         <Card style={{ marginBottom: 10 }}>
           <Card.Title
             title="Health Condition: Improving"
-            subtitle={`Patients Suffering: ${countOfImprovingPatients}`}
+            subtitle={`Number of Patients: ${countOfImprovingPatients}`}
             subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
           />
           <Card.Content>
@@ -188,7 +189,7 @@ class PractionerView extends React.Component {
                       <DataTable.Cell >{patients.patientID}</DataTable.Cell>
                       <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
                       <DataTable.Cell onPress={() => console.log('Pressed')}>
-                        Click Here
+                      Call Patient
                     </DataTable.Cell>
                     </DataTable.Row>
                   ))}
@@ -196,6 +197,22 @@ class PractionerView extends React.Component {
               </ScrollView>
             </SafeAreaView>
           </Card.Content>
+          <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => console.log('Pressed')}
+          style={styles.TouchableOpacityStyle}>
+          <Image
+            //We are making FAB using TouchableOpacity with an image
+            //We are using online image here
+            source={{
+              uri:
+              'https://imageog.flaticon.com/icons/png/512/0/532.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF',
+            }}
+            //You can use you project image Example below
+            //source={require('./images/float-add-icon.png')}
+            style={styles.FloatingButtonStyle}
+          />
+        </TouchableOpacity>
         </Card>
         <Button
           title="Create Patient"
@@ -222,6 +239,23 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 42,
+  },
+  TouchableOpacityStyle: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 30,
+    bottom: 30,
+  },
+
+  FloatingButtonStyle: {
+    resizeMode: 'contain',
+    width: 60,
+    height: 60,
+    marginTop: 50,
+    //backgroundColor:'black'
   },
 });
 

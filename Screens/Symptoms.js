@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 // import Slider from "react-native-slider";
-import { Button, Alert } from 'react-native';
+import {  Alert } from 'react-native';
 import { Slider } from 'react-native-elements';
 import { AppRegistry, StyleSheet, View, Text } from "react-native";
-import { Card, Title } from 'react-native-paper';
+import { Button, Card, Title } from 'react-native-paper';
 import { SafeAreaView, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -36,7 +36,6 @@ class Symptoms extends Component {
       symptomsAverage: 1
     }
   };
-
 
   async insertPatientData() {
     const token = await AsyncStorage.getItem('token')
@@ -314,15 +313,17 @@ class Symptoms extends Component {
             <View style={styles.buttonContainer}>
               <Button
                 title="Insert"
-                color="#1DDCAF"
+                style={{backgroundColor: '#1DDCAF'}}
+                color={'white'}
+                contentStyle={{with: 50}}
                 onPress={() => this.insertPatientData()}
-              />
-              <Text>   </Text>
+              >Insert</Button>
               <Button
                 title="Update"
-                color="#1DDCAF"
+                color={'white'}
+                style={{ backgroundColor: '#1DDCAF'}}
               onPress={() => this.updatePatientData()}
-              />
+              >Update</Button>
             </View>
           </Card>
         </ScrollView>
@@ -347,6 +348,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-evenly',
     marginLeft: 10,
     marginRight: 10
   },

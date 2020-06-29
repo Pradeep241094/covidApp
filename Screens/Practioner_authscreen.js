@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { Form, Item, Input, Text, Button } from 'native-base';
+import { View, StyleSheet, Alert, Text } from 'react-native';
+import { Form, Item, Input, Button } from 'native-base';
 import { AppLoading } from 'expo';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Font from 'expo-font';
@@ -56,7 +56,7 @@ class PractionerAuth extends Component {
                         <Text style={styles.textContainer}>Welcome!</Text>
 
                         <View style={styles.formArea}>
-                            <Text style={[styles.textContainer, styles.signin]}>Sign in</Text>
+                            <Text style={[styles.textContainer, styles.signin]}>Medical Provider Sign in</Text>
                             <Form style={styles.mainForm}>
                                 <Item style={styles.formItems}>
                                     <Input placeholder="Username" style={styles.Input} onChangeText={text => this.setState({ username: text })} />

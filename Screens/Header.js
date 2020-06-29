@@ -10,9 +10,9 @@ export default class Header extends React.Component {
       >
          <Avatar.Image 
          size={48} 
-         style ={{marginLeft: 10}}
+         style ={{marginLeft: 10, backgroundColor: 'white'}}
          source={require('../assets/Logo.png')} />
-         <Appbar.Content title="Covid-19 MD Patient Follow up" subtitle={'Patient'} />
+         <Appbar.Content title="Covid-19 MD Patient Follow up"  />
       </Appbar.Header>
     );
   }

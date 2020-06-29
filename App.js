@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Navigator from './Routes/Hometsack';
 import PractionerStack from './Routes/PractionerStack';
+import Header from './Screens/Header';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -28,10 +29,15 @@ function HomeStackScreen({navigation, route}) {
     navigation.setOptions({tabBarVisible : true})
   }
   return (
-    <HomeStack.Navigator initialRouteName="PatientLogin">
+    <HomeStack.Navigator screenOptions={{
+      headerShown: false
+    }} initialRouteName="Patient Login">
       <HomeStack.Screen
-        name="PatientLogin"
+        name="Patient Login"
         component={PatientView}
+        screenOptions={{
+          headerShown: false
+        }}
       />
     </HomeStack.Navigator>
   );
@@ -44,7 +50,11 @@ function SettingsStackScreen({navigation, route}) {
     navigation.setOptions({tabBarVisible : false})
   }
   return (
-    <SettingsStack.Navigator>
+    <SettingsStack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}
+    >
       <SettingsStack.Screen
         name="Doctor Login"
         component={DoctorView}
@@ -54,13 +64,15 @@ function SettingsStackScreen({navigation, route}) {
 }
 export default function App() {
   return (
+    <>
+    <Header />
     <NavigationContainer>
     <Tab.Navigator>
       <Tab.Screen name="Patient Login"  component={HomeStackScreen} />
       <Tab.Screen name="Doctor Login" component={SettingsStackScreen} />
     </Tab.Navigator>
     </NavigationContainer>
-   
+    </>
   );
 }
 
