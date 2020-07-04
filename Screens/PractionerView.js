@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Card, DataTable } from 'react-native-paper';
-import { View, Button, TouchableOpacity,  Image } from 'react-native';
+import { View, Button, TouchableOpacity,  Image, Alert } from 'react-native';
 import {  Title, Paragraph } from 'react-native-paper';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -127,7 +127,7 @@ class PractionerView extends React.Component {
                       {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
                       <DataTable.Cell >{patients.patientID}</DataTable.Cell>
                       <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
-                      <DataTable.Cell onPress={() => console.log('Pressed')}>
+                      <DataTable.Cell onPress={() => Alert.alert('Currently does not store personal information!')}>
                        Call Patient
                     </DataTable.Cell>
                     </DataTable.Row>
@@ -160,7 +160,7 @@ class PractionerView extends React.Component {
                             {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
                             <DataTable.Cell >{patients.patientID}</DataTable.Cell>
                             <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
-                            <DataTable.Cell onPress={() => console.log('Pressed')}>
+                            <DataTable.Cell onPress={() => Alert.alert('Currently does not store personal information!')}>
                             Call Patient
                       </DataTable.Cell>
                           </DataTable.Row>
@@ -202,7 +202,7 @@ class PractionerView extends React.Component {
                     <DataTable.Row>
                       <DataTable.Cell >{patients.patientID}</DataTable.Cell>
                       <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
-                      <DataTable.Cell onPress={() => console.log('Pressed')}>
+                      <DataTable.Cell onPress={() => Alert.alert('Currently does not store personal information!')}>
                       Call Patient
                     </DataTable.Cell>
                     </DataTable.Row>
@@ -213,7 +213,7 @@ class PractionerView extends React.Component {
           </Card.Content>
           <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => console.log('Pressed')}
+          onPress={() => Alert.alert('Currently does not store personal information!')}
           style={styles.TouchableOpacityStyle}>
           <Image
             //We are making FAB using TouchableOpacity with an image

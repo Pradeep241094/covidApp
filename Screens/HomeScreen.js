@@ -185,7 +185,7 @@ class HomeScreen extends React.Component {
                   />
                   <BarChart
                     style={{ flex: 1, marginLeft: 16 }}
-                    data={resultantStats}
+                    data={resultantStats.reverse()}
                     svg={{ fill }}
                     contentInset={contentInset}
                   >
