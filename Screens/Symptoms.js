@@ -5,6 +5,7 @@ import { Slider } from 'react-native-elements';
 import { AppRegistry, StyleSheet, View, Text } from "react-native";
 import { Button, Card, Title } from 'react-native-paper';
 import { SafeAreaView, ScrollView } from 'react-native';
+import { AppLoading } from 'expo';
 import AsyncStorage from '@react-native-community/async-storage';
 
 let customFonts = {
@@ -17,13 +18,17 @@ class Symptoms extends Component {
   constructor(props) {
     super(props)
   }
+  static route = {
+    styles: {
+      gestures: null,
+    },
+  };
   token = undefined
-  newdate = new Date()
   olddate = new Date()
-  displaydate=Boolean
   state = {
+    dateloaded:false,
     patient_ID: '',
-    updateDate: undefined,
+    updateDate: new Date(1980,10,10),
     symptom: {
       feverOrChills: 1,
       cough: 1,
@@ -41,19 +46,20 @@ class Symptoms extends Component {
   };
 
   async componentDidMount() {
-    this.olddatedate = this.olddate.getFullYear() + '-' + (this.olddate.getMonth() + 1) + '-' + this.olddate.getDate();
+    this.olddatedate = new Date(this.olddate.getFullYear() + '-' + (this.olddate.getMonth() + 1) + '-' + this.olddate.getDate());
     var { username } = this.props.route.params;
     console.log(username)
     try {
       const token = await AsyncStorage.getItem('token')
-      this.getPatientData(username, token)
+      await this.getPatientData(username, token)
+      
     }
     catch (e) {
       console.log(e)
     }
   }
 
-  getPatientData(username, token) {
+ async getPatientData(username, token) {
     const patient_ID = username;
     var { updateDate, symptoms } = this.state;
     var url = `https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/FollowUpData/LastUpdated?patient_ID=${patient_ID}`;
@@ -69,11 +75,11 @@ class Symptoms extends Component {
 
         this.setState(
           {
-            updateDate: responseJson.symptomRecords.date,
+            updateDate: new Date(responseJson.symptomRecords.date),
+            dateloaded:true
 
           });
-        this.newdate = this.state.updateDate
-        this.displaydate= Date.parse(this.newdate) < Date.parse(this.olddate)
+        // console.log(Date.parse(this.newdate) < Date.parse(this.olddate))
       })
       .catch((error) => {
         console.error(error);
@@ -185,7 +191,7 @@ class Symptoms extends Component {
         'Authorization': 'Bearer ' + token,
       },
       body: JSON.stringify(data),
-    }).then(response => JSON.stringify(response))
+    }).then(response =>   JSON.stringify(response))
       .then(responseJson => {
         console.log(responseJson)
         Alert.alert('Successfully Updated!')
@@ -196,6 +202,7 @@ class Symptoms extends Component {
   }
 
   render() {
+    if (this.state.dateloaded) {
     const {
       feverOrChills,
       cough,
@@ -354,27 +361,33 @@ class Symptoms extends Component {
 
             </Card>
             <View style={styles.buttonContainer}>
-            { this.displaydate
-                ?<Button
-                title="Insert"
-                style={{ backgroundColor: '#1DDCAF' }}
-                color={'white'}
-                contentStyle={{ with: 50 }}
-                onPress={() => this.insertPatientData()}
-              >Insert</Button>
-              : <Button
-                title="Update"
-                color={'white'}
-                style={{ backgroundColor: '#1DDCAF' }}
-                onPress={() => this.updatePatientData()}
-              >Update</Button>
-            }
+              {console.log('newdate>>>',((this.state.updateDate).toDateString())),
+              console.log('olddate>>>',this.olddate.toDateString()),
+             Date.parse((this.state.updateDate).toDateString()) < Date.parse((this.olddate).toDateString())
+                  ? <Button
+                    title="Insert"
+                    style={{ backgroundColor: '#1DDCAF' }}
+                    color={'white'}
+                    contentStyle={{ with: 50 }}
+                    onPress={() => this.insertPatientData()}
+                  >Insert</Button>
+                  : <Button
+                    title="Update"
+                    color={'white'}
+                    style={{ backgroundColor: '#1DDCAF' }}
+                    onPress={() => this.updatePatientData()}
+                  >Update</Button>
+
+              }
             </View>
           </Card>
         </ScrollView>
       </SafeAreaView>
     );
-  }
+  } else {
+    return <AppLoading />;
+}
+}
 }
 
 const styles = StyleSheet.create({
