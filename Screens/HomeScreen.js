@@ -63,8 +63,6 @@ class HomeScreen extends React.Component {
       },
     }).then(response => response.json())
       .then(responseJson => {
-
-        console.log('>>>>>>>&&&&&&&&&&&&&&&&&&&&&&&>>>>>>>>>', responseJson)
         this.setState(
           {
             patient_ID: responseJson.patient_ID,
@@ -108,7 +106,6 @@ class HomeScreen extends React.Component {
     }).then(response => response.json())
       .then(responseJson => {
         const data = responseJson;
-        console.log('>>>>>>>Data>>>>>>>>>>>>>', data)
         this.setState({
           stats: data.symptomAverageRecords
         })
@@ -134,8 +131,6 @@ class HomeScreen extends React.Component {
     const fill = '#1DDCAF';
     const data = [1, 2, 3, 4, 5];
     const contentInset = { top: 20, bottom: 20 }
-
-    console.log('stats>>>>>>>>>>>>>', stats);
     const resultantStats = stats.map(statistics => {
       return statistics.symptomAverage;
     });

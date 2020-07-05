@@ -46,6 +46,7 @@ class Symptoms extends Component {
   };
 
   async componentDidMount() {
+    this.getP
     this.olddatedate = new Date(this.olddate.getFullYear() + '-' + (this.olddate.getMonth() + 1) + '-' + this.olddate.getDate());
     var { username } = this.props.route.params;
     console.log(username)
@@ -76,7 +77,21 @@ class Symptoms extends Component {
         this.setState(
           {
             updateDate: new Date(responseJson.symptomRecords.date),
-            dateloaded:true
+            dateloaded:true,
+            symptoms: {
+              feverOrChills: responseJson.symptomRecords.symptoms.feverOrChills,
+              cough: responseJson.symptomRecords.symptoms.cough,
+              headache: responseJson.symptomRecords.symptoms.headache,
+              shortnessOfBreath: responseJson.symptomRecords.symptoms.shortnessOfBreath,
+              fatigue: responseJson.symptomRecords.symptoms.fatigue,
+              muscleOrBodyAches: responseJson.symptomRecords.symptoms.muscleOrBodyAches,
+              soreThroat: responseJson.symptomRecords.symptoms.soreThroat,
+              lossOfTasteOrSmell: responseJson.symptomRecords.symptoms.lossOfTasteOrSmell,
+              congestionOrRunnyNose: responseJson.symptomRecords.symptoms.congestionOrRunnyNose,
+              nauseaOrVomiting: responseJson.symptomRecords.symptoms.nauseaOrVomiting,
+              diarrhea: responseJson.symptomRecords.symptoms.diarrhea,
+              symptomsAverage: responseJson.symptomRecords.symptoms.symptomsAverage,
+            }
 
           });
         // console.log(Date.parse(this.newdate) < Date.parse(this.olddate))
@@ -105,7 +120,10 @@ class Symptoms extends Component {
       nauseaOrVomiting,
       diarrhea,
       symptomsAverage,
+      updateDate,
     } = this.state;
+
+    console.log('>>>>>updateDate>>>>>>>>>>',updateDate)
 
     const data = {
       "patient_ID": username,
@@ -127,6 +145,8 @@ class Symptoms extends Component {
 
     }
 
+    console.log('>>>>>>>>>>>>>>>>>>data', data);
+
     fetch('https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/InsertFollowUpData', {
       method: 'POST',
       // cors: 'no-cors',
@@ -135,7 +155,9 @@ class Symptoms extends Component {
         'Authorization': 'Bearer ' + token,
       },
       body: JSON.stringify(data),
+      
     }).then(response => JSON.stringify(response))
+  
       .then(responseJson => {
         Alert.alert('Successfully Added!')
       })
@@ -216,7 +238,11 @@ class Symptoms extends Component {
       nauseaOrVomiting,
       diarrhea,
       symptomsAverage,
-    } = this.state;
+      updateDate
+    } = this.state.symptoms;
+
+
+    console.log('symptoms', this.state.symptoms);
 
     return (
       <SafeAreaView style={styles.boxcontainer}>
@@ -361,9 +387,7 @@ class Symptoms extends Component {
 
             </Card>
             <View style={styles.buttonContainer}>
-              {console.log('newdate>>>',((this.state.updateDate).toDateString())),
-              console.log('olddate>>>',this.olddate.toDateString()),
-             Date.parse((this.state.updateDate).toDateString()) < Date.parse((this.olddate).toDateString())
+              {Date.parse((this.state.updateDate).toDateString() + 1) < Date.parse((this.olddate).toDateString())
                   ? <Button
                     title="Insert"
                     style={{ backgroundColor: '#1DDCAF' }}
