@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Card, DataTable } from 'react-native-paper';
-import { View, Button, TouchableOpacity,  Image, Alert } from 'react-native';
-import {  Title, Paragraph } from 'react-native-paper';
+import { View, TouchableOpacity, Image, Alert } from 'react-native';
+import { Title, Paragraph, Button } from 'react-native-paper';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as FileSystem from 'expo-file-system';
 import Table from './DataTable';
 
 
@@ -51,6 +52,30 @@ class PractionerView extends React.Component {
     }
 
   }
+ async downloadpatientdata(){
+   console.log('Download!>>>>>>>>')
+    const callback = downloadProgress => {
+      const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
+      this.setState({
+        downloadProgress: progress,
+      });
+    };
+    
+    const downloadResumable = FileSystem.createDownloadResumable(
+      'http://techslides.com/demos/sample-videos/small.mp4',
+      FileSystem.documentDirectory + 'small.mp4',
+      {},
+      callback
+    );
+    
+    try {
+      const { uri } = await downloadResumable.downloadAsync();
+      console.log('Finished downloading to ', uri);
+    } catch (e) {
+      console.error(e);
+    }
+    
+  }
 
   getpatientGroups(username, token) {
     var { updateDate, symptoms } = this.state;
@@ -84,7 +109,7 @@ class PractionerView extends React.Component {
     return local
   }
 
-  logout () {
+  logout() {
     AsyncStorage.clear();
     this.props.navigation.navigate('PractionerAuth');
   }
@@ -95,77 +120,76 @@ class PractionerView extends React.Component {
 
     return (
       <>
-      <View style={{marginRight: 10, marginLeft: 10}}>
-      <ScrollView style={{marginBottom: 10}}>
-      <SafeAreaView>
-        <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
-        <Card.Content>
-          <Title style={{ marginBottom: 10}}>Provider ID: {username}</Title>
-          <Button
-          title="Create Patient"
-          style={{ backgroundColor: '#1DDCAF', marginLeft: 10, marginRight: 10 }}
-          color={'#1DDCAF'}
-          onPress={() => this.props.navigation.navigate('CreatePatient')}
-        >Create Patient
+        <View style={{ marginRight: 10, marginLeft: 10 }}>
+          <ScrollView style={{ marginBottom: 10 }}>
+            <SafeAreaView>
+              <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
+                <Card.Content>
+                  <Title style={{ marginBottom: 10 }}>Provider ID: {username}</Title>
+                  <Button
+                    title="Create Patient"
+                    style={{ backgroundColor: '#1DDCAF', marginLeft: 10, marginRight: 10 }}
+                    color={'white'}
+                    onPress={() => this.props.navigation.navigate('CreatePatient')}
+                  >Create Patient
         </Button>
-        </Card.Content>
-          <Card.Title
-            title="Health Condition: Deteriorating"
-            subtitle={`Number of Patients: ${countOfDeterioratingPatients}`}
-            subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
-          />
-          <Card.Content>
-          <Table data ={deteriorating} />
-          </Card.Content>
-        </Card>
-        <Card style={{ marginBottom: 10 }}>
-          <Card.Title
-            title="Health Condition: Stable"
-            subtitle={`Number of Patients: ${countOfStablePatients}`}
-            subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
-          />
-           <Card.Content>
-           <Table data ={stable} />
-           </Card.Content>
-        </Card>
-        <Card style={{ marginBottom: 10, paddingBottom: 10 }}>
-          <Card.Title
-            title="Health Condition: Improving"
-            subtitle={`Number of Patients: ${countOfImprovingPatients}`}
-            subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
-          />
-          <Card.Content>
-          <Table data ={improving} />
-          </Card.Content>
-          <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => Alert.alert('Currently does not store personal information!')}
-          style={styles.TouchableOpacityStyle}>
-          <Image
-            //We are making FAB using TouchableOpacity with an image
-            //We are using online image here
-            source={{
-              uri:
-              'https://imageog.flaticon.com/icons/png/512/0/532.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF',
-            }}
-            //You can use you project image Example below
-            //source={require('./images/float-add-icon.png')}
-            style={styles.FloatingButtonStyle}
-          />
-        </TouchableOpacity>
-        </Card>
-        <View style={{marginLeft: 10, marginRight: 10}}>
-          
-        <Button
-          title="Logout"
-          style={{ backgroundColor: '#1DDCAF', marginBottom: 10 }}
-          color={'#1DDCAF'}
-          onPress={() => this.logout()}
-        >Logout
-        </Button>
-        </View>
-        </SafeAreaView>
-        </ScrollView>
+                </Card.Content>
+                <Card.Title
+                  title="Health Condition: Deteriorating"
+                  subtitle={`Number of Patients: ${countOfDeterioratingPatients}`}
+                  subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
+                />
+                <Card.Content>
+                  <Table data={deteriorating} />
+                </Card.Content>
+              </Card>
+              <Card style={{ marginBottom: 10 }}>
+                <Card.Title
+                  title="Health Condition: Stable"
+                  subtitle={`Number of Patients: ${countOfStablePatients}`}
+                  subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
+                />
+                <Card.Content>
+                  <Table data={stable} />
+                </Card.Content>
+              </Card>
+              <Card style={{ marginBottom: 10, paddingBottom: 10 }}>
+                <Card.Title
+                  title="Health Condition: Improving"
+                  subtitle={`Number of Patients: ${countOfImprovingPatients}`}
+                  subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
+                />
+                <Card.Content>
+                  <Table data={improving} />
+                </Card.Content>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => this.downloadpatientdata()}
+                  style={styles.TouchableOpacityStyle}>
+                  <Image
+                    //We are making FAB using TouchableOpacity with an image
+                    //We are using online image here
+                    source={{
+                      uri:
+                        'https://imageog.flaticon.com/icons/png/512/0/532.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF',
+                    }}
+                    //You can use you project image Example below
+                    //source={require('./images/float-add-icon.png')}
+                    style={styles.FloatingButtonStyle}
+                  />
+                </TouchableOpacity>
+              </Card>
+              <View style={{ marginLeft: 10, marginRight: 10, marginBottom: 10 }}>
+                <Button
+                  title="Logout"
+                  style={{ backgroundColor: '#1DDCAF' }}
+                  color={'white'}
+                  onPress={() => this.logout()}
+                >Logout
+                </Button>
+              </View>
+            </SafeAreaView>
+          </ScrollView>
         </View>
       </>
     )
