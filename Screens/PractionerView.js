@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Card, DataTable } from 'react-native-paper';
-import { View, Button, TouchableOpacity,  Image } from 'react-native';
+import { View, Button, TouchableOpacity,  Image, Alert } from 'react-native';
 import {  Title, Paragraph } from 'react-native-paper';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -127,7 +127,6 @@ class PractionerView extends React.Component {
            <Card.Content>
            <Table data ={stable} />
            </Card.Content>
-      
         </Card>
         <Card style={{ marginBottom: 10, paddingBottom: 10 }}>
           <Card.Title
@@ -140,7 +139,7 @@ class PractionerView extends React.Component {
           </Card.Content>
           <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => console.log('Pressed')}
+          onPress={() => Alert.alert('Currently does not store personal information!')}
           style={styles.TouchableOpacityStyle}>
           <Image
             //We are making FAB using TouchableOpacity with an image

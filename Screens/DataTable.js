@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DataTable, DataTableCell, DataTableRow, DataTablePagination } from 'material-bread';
+import {Alert} from 'react-native';
 
 class Table extends React.Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class Table extends React.Component {
               <DataTableRow key={row.name} hover>
                 <DataTableCell text={row.patientID} flex={2} />
                 <DataTableCell text={this.changeDateFormat(row.lastUpdateDate)} />
-                <DataTableCell text="Call Patient" onPress={() => console.log('Pressed')} />
+                <DataTableCell text="Call Patient"onPress={() => Alert.alert('Currently does not store personal information!')} />
               </DataTableRow>
             ))}
 
