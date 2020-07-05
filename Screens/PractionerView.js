@@ -6,6 +6,10 @@ import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as FileSystem from 'expo-file-system';
 import Table from './DataTable';
+import * as MediaLibrary from 'expo-media-library';
+import * as Permissions from 'expo-permissions';
+import { Icon } from 'react-native-elements'
+
 
 
 class PractionerView extends React.Component {
@@ -13,6 +17,7 @@ class PractionerView extends React.Component {
     super(props)
   }
   state = {
+    downloadProgress: 0,
     countOfStablePatients: 0,
     countOfImprovingPatients: 0,
     countOfDeterioratingPatients: 0,
@@ -52,29 +57,37 @@ class PractionerView extends React.Component {
     }
 
   }
- async downloadpatientdata(){
-   console.log('Download!>>>>>>>>')
-    const callback = downloadProgress => {
-      const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
-      this.setState({
-        downloadProgress: progress,
-      });
-    };
-    
-    const downloadResumable = FileSystem.createDownloadResumable(
-      'http://techslides.com/demos/sample-videos/small.mp4',
-      FileSystem.documentDirectory + 'small.mp4',
-      {},
-      callback
-    );
-    
-    try {
-      const { uri } = await downloadResumable.downloadAsync();
-      console.log('Finished downloading to ', uri);
-    } catch (e) {
-      console.error(e);
+
+  callback = downloadProgress => {
+    const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
+    this.setState({
+      downloadProgress: progress,
+    });
+  };
+
+  downloadFile() {
+    console.log('Hello, >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
+    const uri = "https://certficates-pradeep.s3.amazonaws.com/CertificateOfCompletion_Learning+REST+APIs.pdf"
+    let fileUri = FileSystem.documentDirectory + "cretificate.pdf";
+    FileSystem.downloadAsync(uri, fileUri)
+      .then(({ uri }) => {
+        this.saveFile(uri);
+        this.callback
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  }
+
+  saveFile = async (fileUri) => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    console.log('status>>>>>>>>>>>>>>>>>>', status);
+    if (status === "granted") {
+      const asset = await MediaLibrary.createAssetAsync(fileUri)
+      await MediaLibrary.createAlbumAsync("Download", asset, false)
+      Alert.alert('Saved to Downloads Folder')
+      this.callback
     }
-    
   }
 
   getpatientGroups(username, token) {
@@ -125,14 +138,22 @@ class PractionerView extends React.Component {
             <SafeAreaView>
               <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
                 <Card.Content>
-                  <Title style={{ marginBottom: 10 }}>Provider ID: {username}</Title>
+                  <View style={{display: 'flex',marginTop: -15, flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <Title style={{marginTop: 20}}>Provider ID: {username}</Title>
+                  <Icon
+                  raised
+                  name='download'
+                  type='font-awesome'
+                  color='black'
+                  onPress={() => this.downloadFile()} />
+                  </View>
                   <Button
                     title="Create Patient"
                     style={{ backgroundColor: '#1DDCAF', marginLeft: 10, marginRight: 10 }}
                     color={'white'}
                     onPress={() => this.props.navigation.navigate('CreatePatient')}
                   >Create Patient
-        </Button>
+                </Button>
                 </Card.Content>
                 <Card.Title
                   title="Health Condition: Deteriorating"
@@ -162,22 +183,6 @@ class PractionerView extends React.Component {
                 <Card.Content>
                   <Table data={improving} />
                 </Card.Content>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => this.downloadpatientdata()}
-                  style={styles.TouchableOpacityStyle}>
-                  <Image
-                    //We are making FAB using TouchableOpacity with an image
-                    //We are using online image here
-                    source={{
-                      uri:
-                        'https://imageog.flaticon.com/icons/png/512/0/532.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF',
-                    }}
-                    //You can use you project image Example below
-                    //source={require('./images/float-add-icon.png')}
-                    style={styles.FloatingButtonStyle}
-                  />
-                </TouchableOpacity>
               </Card>
               <View style={{ marginLeft: 10, marginRight: 10, marginBottom: 10 }}>
                 <Button
