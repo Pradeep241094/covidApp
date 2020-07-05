@@ -13,7 +13,7 @@ const SettingsStack = createStackNavigator();
 const Stack = createStackNavigator();
 
 function PatientView() {
-  return <Navigator/>;
+  return <Navigator />;
 }
 
 function DoctorView() {
@@ -21,13 +21,10 @@ function DoctorView() {
   return <PractionerStack />;
 }
 
-function HomeStackScreen({navigation, route}) {
+function HomeStackScreen({ navigation, route }) {
   console.log('navigation>>>>>>>>>>>>', route.state)
-  if (route.state && route.state.index > 1) {
-    navigation.setOptions({tabBarVisible : false})
-  } else {
-    navigation.setOptions({tabBarVisible : true})
-  }
+  navigation.setOptions({ tabBarVisible: true })
+  setTimeout(function () { navigation.setOptions({ tabBarVisible: false }) }, 10500);
   return (
     <HomeStack.Navigator screenOptions={{
       headerShown: false
@@ -43,17 +40,15 @@ function HomeStackScreen({navigation, route}) {
   );
 }
 
-function SettingsStackScreen({navigation, route}) {
-   if (route.state && route.state.index > 0) {
-    navigation.setOptions({tabBarVisible : true})
-  } else {
-    navigation.setOptions({tabBarVisible : false})
-  }
+function SettingsStackScreen({ navigation, route }) {
+  console.log('navigation>>>>>>>>>>>>', route.state)
+  navigation.setOptions({ tabBarVisible: true })
+  setTimeout(function () { navigation.setOptions({ tabBarVisible: false }) }, 10500);
   return (
     <SettingsStack.Navigator
-    screenOptions={{
-      headerShown: false
-    }}
+      screenOptions={{
+        headerShown: false
+      }}
     >
       <SettingsStack.Screen
         name="Provider Login"
@@ -65,13 +60,13 @@ function SettingsStackScreen({navigation, route}) {
 export default function App() {
   return (
     <>
-    <Header />
-    <NavigationContainer>
-    <Tab.Navigator>
-      <Tab.Screen name="Patient Login"  component={HomeStackScreen} />
-      <Tab.Screen name="Provider Login" component={SettingsStackScreen} />
-    </Tab.Navigator>
-    </NavigationContainer>
+      <Header />
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="Patient Login" component={HomeStackScreen} />
+          <Tab.Screen name="Provider Login" component={SettingsStackScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
     </>
   );
 }

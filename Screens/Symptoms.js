@@ -67,7 +67,6 @@ class Symptoms extends Component {
     }).then(response => response.json())
       .then(responseJson => {
 
-        console.log('>>>>>>>&&&&&&&&&&&&&&&&&&&&&&&>>>>>>>>>', responseJson)
         this.setState(
           {
             updateDate: responseJson.symptomRecords.date,

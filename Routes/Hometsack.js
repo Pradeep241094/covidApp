@@ -52,7 +52,7 @@ class Navigator extends Component {
                   </>
                   :
                   <>
-                    <Stack.Screen name="Splash" component={Splashscreen} />
+                    <Stack.Screen  name="Splash" component={Splashscreen} />
                     <Stack.Screen name="Auth" component={AuthScreen} />
                     <Stack.Screen name="Home" component={HomeScreen} />
                     <Stack.Screen name="Symptoms" component={Symptoms} />

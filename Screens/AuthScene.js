@@ -19,7 +19,7 @@ class AuthScene extends Component {
         password: "",
     };
 
-    sendCred = async (props) => {
+    sendCred = async () => {
         fetch("https://mdfollowupauth.azurewebsites.net/api/Login/Patient", {
             method: "POST",
             headers: {
