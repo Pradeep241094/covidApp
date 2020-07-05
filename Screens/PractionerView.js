@@ -4,6 +4,7 @@ import { View, Button, TouchableOpacity,  Image } from 'react-native';
 import {  Title, Paragraph } from 'react-native-paper';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import Table from './DataTable';
 
 
 class PractionerView extends React.Component {
@@ -95,7 +96,7 @@ class PractionerView extends React.Component {
     return (
       <>
       <View style={{marginRight: 10, marginLeft: 10}}>
-      <ScrollView>
+      <ScrollView style={{marginBottom: 10}}>
       <SafeAreaView>
         <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
         <Card.Content>
@@ -114,27 +115,7 @@ class PractionerView extends React.Component {
             subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
           />
           <Card.Content>
-            <SafeAreaView style={{ height: 150 }}>
-              <ScrollView>
-                <DataTable>
-                  <DataTable.Header>
-                    <DataTable.Title>Patient ID</DataTable.Title>
-                    <DataTable.Title >Date</DataTable.Title>
-                    <DataTable.Title>Action</DataTable.Title>
-                  </DataTable.Header>
-                  {deteriorating.map((patients) => (
-                    <DataTable.Row>
-                      {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
-                      <DataTable.Cell >{patients.patientID}</DataTable.Cell>
-                      <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
-                      <DataTable.Cell onPress={() => console.log('Pressed')}>
-                       Call Patient
-                    </DataTable.Cell>
-                    </DataTable.Row>
-                  ))}
-                </DataTable>
-              </ScrollView>
-            </SafeAreaView>
+          <Table data ={deteriorating} />
           </Card.Content>
         </Card>
         <Card style={{ marginBottom: 10 }}>
@@ -143,73 +124,19 @@ class PractionerView extends React.Component {
             subtitle={`Number of Patients: ${countOfStablePatients}`}
             subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
           />
-          <Card.Content>
-            <SafeAreaView style={{ height: 150 }}>
-              <ScrollView>
-                <View>
-                  {
-                    countOfStablePatients ?
-                      <DataTable>
-                        <DataTable.Header>
-                          <DataTable.Title>Patient ID</DataTable.Title>
-                          <DataTable.Title >Date</DataTable.Title>
-                          <DataTable.Title>Action</DataTable.Title>
-                        </DataTable.Header>
-                        {stable.map((patients) => (
-                          <DataTable.Row>
-                            {console.log('>>>>>>>>>>>>>>>>>>>>>>>patients', patients.patientID)}
-                            <DataTable.Cell >{patients.patientID}</DataTable.Cell>
-                            <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
-                            <DataTable.Cell onPress={() => console.log('Pressed')}>
-                            Call Patient
-                      </DataTable.Cell>
-                          </DataTable.Row>
-                        ))}
-                      </DataTable> :
-                      <DataTable>
-                        <DataTable.Header>
-                          <DataTable.Title>Patient ID</DataTable.Title>
-                          <DataTable.Title >Date</DataTable.Title>
-                          <DataTable.Title>Action</DataTable.Title>
-                        </DataTable.Header>
-                        <DataTable.Row>
-
-                          <DataTable.Cell>No Data Available</DataTable.Cell>
-                        </DataTable.Row>
-                      </DataTable>
-                  }
-                </View>
-              </ScrollView>
-            </SafeAreaView>
-          </Card.Content>
+           <Card.Content>
+           <Table data ={stable} />
+           </Card.Content>
+      
         </Card>
-        <Card style={{ marginBottom: 10 }}>
+        <Card style={{ marginBottom: 10, paddingBottom: 10 }}>
           <Card.Title
             title="Health Condition: Improving"
             subtitle={`Number of Patients: ${countOfImprovingPatients}`}
             subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
           />
           <Card.Content>
-            <SafeAreaView style={{ height: 150 }}>
-              <ScrollView>
-                <DataTable>
-                  <DataTable.Header>
-                    <DataTable.Title>Patient ID</DataTable.Title>
-                    <DataTable.Title >Date</DataTable.Title>
-                    <DataTable.Title>Action</DataTable.Title>
-                  </DataTable.Header>
-                  {improving.map((patients) => (
-                    <DataTable.Row>
-                      <DataTable.Cell >{patients.patientID}</DataTable.Cell>
-                      <DataTable.Cell>{this.changeDateFormat(patients.lastUpdateDate)}</DataTable.Cell>
-                      <DataTable.Cell onPress={() => console.log('Pressed')}>
-                      Call Patient
-                    </DataTable.Cell>
-                    </DataTable.Row>
-                  ))}
-                </DataTable>
-              </ScrollView>
-            </SafeAreaView>
+          <Table data ={improving} />
           </Card.Content>
           <TouchableOpacity
           activeOpacity={0.7}
@@ -229,9 +156,10 @@ class PractionerView extends React.Component {
         </TouchableOpacity>
         </Card>
         <View style={{marginLeft: 10, marginRight: 10}}>
+          
         <Button
           title="Logout"
-          style={{ backgroundColor: '#1DDCAF' }}
+          style={{ backgroundColor: '#1DDCAF', marginBottom: 10 }}
           color={'#1DDCAF'}
           onPress={() => this.logout()}
         >Logout
@@ -270,7 +198,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 60,
     height: 60,
-    marginTop: 50,
+    marginTop: 100,
     //backgroundColor:'black'
   },
 });
