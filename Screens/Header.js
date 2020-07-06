@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Avatar, Appbar } from 'react-native-paper';
+import {Image } from 'react-native';
 
 export default class Header extends React.Component {
 
@@ -7,12 +8,14 @@ export default class Header extends React.Component {
     return (
       <Appbar.Header
       theme={{ colors: { primary: '#1DDCAF' } }}
-      >
-         <Avatar.Image 
-         size={48} 
-         style ={{marginLeft: 10, backgroundColor: 'white'}}
-         source={require('../assets/Logo.png')} />
-         <Appbar.Content title="Covid-19 MD Patient Follow up"  />
+      ><Image
+      source={require('../assets/Logo.png')}
+      style={{
+        marginLeft: 10,
+        width: 150,
+        height: 50,
+      }}
+    />
       </Appbar.Header>
     );
   }

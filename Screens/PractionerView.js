@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { Card, DataTable } from 'react-native-paper';
-import { View, Button, TouchableOpacity,  Image, Alert } from 'react-native';
-import {  Title, Paragraph } from 'react-native-paper';
+import { View, TouchableOpacity, Image, Alert } from 'react-native';
+import { Title, Paragraph, Button } from 'react-native-paper';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as FileSystem from 'expo-file-system';
 import Table from './DataTable';
+import * as MediaLibrary from 'expo-media-library';
+import * as Permissions from 'expo-permissions';
+import { Icon } from 'react-native-elements'
+
 
 
 class PractionerView extends React.Component {
@@ -12,6 +17,7 @@ class PractionerView extends React.Component {
     super(props)
   }
   state = {
+    downloadProgress: 0,
     countOfStablePatients: 0,
     countOfImprovingPatients: 0,
     countOfDeterioratingPatients: 0,
@@ -52,6 +58,38 @@ class PractionerView extends React.Component {
 
   }
 
+  callback = downloadProgress => {
+    const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
+    this.setState({
+      downloadProgress: progress,
+    });
+  };
+
+  downloadFile() {
+    // console.log('Hello, >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
+    const uri = "https://mdfollowupcovidapi.azurewebsites.net/api/covid/Provider/GetPatientGroupsCSV"
+    let fileUri = FileSystem.documentDirectory + "patientGrouping.csv";
+    FileSystem.downloadAsync(uri, fileUri)
+      .then(({ uri }) => {
+        this.saveFile(uri);
+        this.callback
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  }
+
+  saveFile = async (fileUri) => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    console.log('status>>>>>>>>>>>>>>>>>>', status);
+    if (status === "granted") {
+      const asset = await MediaLibrary.createAssetAsync(fileUri)
+      await MediaLibrary.createAlbumAsync("Download", asset, false)
+      Alert.alert('Saved to Downloads Folder')
+      this.callback
+    }
+  }
+
   getpatientGroups(username, token) {
     var { updateDate, symptoms } = this.state;
     fetch('https://mdfollowupcovidapi.azurewebsites.net/api/covid/MedicalProvider/GetPatientGroups', {
@@ -84,7 +122,7 @@ class PractionerView extends React.Component {
     return local
   }
 
-  logout () {
+  logout() {
     AsyncStorage.clear();
     this.props.navigation.navigate('PractionerAuth');
   }
@@ -95,77 +133,68 @@ class PractionerView extends React.Component {
 
     return (
       <>
-      <View style={{marginRight: 10, marginLeft: 10}}>
-      <ScrollView style={{marginBottom: 10}}>
-      <SafeAreaView>
-        <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
-        <Card.Content>
-          <Title style={{ marginBottom: 10}}>Provider ID: {username}</Title>
-          <Button
-          title="Create Patient"
-          style={{ backgroundColor: '#1DDCAF', marginLeft: 10, marginRight: 10 }}
-          color={'#1DDCAF'}
-          onPress={() => this.props.navigation.navigate('CreatePatient')}
-        >Create Patient
-        </Button>
-        </Card.Content>
-          <Card.Title
-            title="Health Condition: Deteriorating"
-            subtitle={`Number of Patients: ${countOfDeterioratingPatients}`}
-            subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
-          />
-          <Card.Content>
-          <Table data ={deteriorating} />
-          </Card.Content>
-        </Card>
-        <Card style={{ marginBottom: 10 }}>
-          <Card.Title
-            title="Health Condition: Stable"
-            subtitle={`Number of Patients: ${countOfStablePatients}`}
-            subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
-          />
-           <Card.Content>
-           <Table data ={stable} />
-           </Card.Content>
-        </Card>
-        <Card style={{ marginBottom: 10, paddingBottom: 10 }}>
-          <Card.Title
-            title="Health Condition: Improving"
-            subtitle={`Number of Patients: ${countOfImprovingPatients}`}
-            subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
-          />
-          <Card.Content>
-          <Table data ={improving} />
-          </Card.Content>
-          <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => Alert.alert('Currently does not store personal information!')}
-          style={styles.TouchableOpacityStyle}>
-          <Image
-            //We are making FAB using TouchableOpacity with an image
-            //We are using online image here
-            source={{
-              uri:
-              'https://imageog.flaticon.com/icons/png/512/0/532.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF',
-            }}
-            //You can use you project image Example below
-            //source={require('./images/float-add-icon.png')}
-            style={styles.FloatingButtonStyle}
-          />
-        </TouchableOpacity>
-        </Card>
-        <View style={{marginLeft: 10, marginRight: 10}}>
-          
-        <Button
-          title="Logout"
-          style={{ backgroundColor: '#1DDCAF', marginBottom: 10 }}
-          color={'#1DDCAF'}
-          onPress={() => this.logout()}
-        >Logout
-        </Button>
-        </View>
-        </SafeAreaView>
-        </ScrollView>
+        <View style={{ marginRight: 10, marginLeft: 10 }}>
+          <ScrollView style={{ marginBottom: 10 }}>
+            <SafeAreaView>
+              <Card style={{ marginBottom: 5, paddingBottom: 0 }}>
+                <Card.Content>
+                  <View style={{display: 'flex',marginTop: -15, flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <Title style={{marginTop: 20}}>Provider ID: {username}</Title>
+                  <Icon
+                  raised
+                  name='download'
+                  type='font-awesome'
+                  color='black'
+                  onPress={() => this.downloadFile()} />
+                  </View>
+                  <Button
+                    title="Create Patient"
+                    style={{ backgroundColor: '#1DDCAF', marginLeft: 10, marginRight: 10 }}
+                    color={'white'}
+                    onPress={() => this.props.navigation.navigate('CreatePatient')}
+                  >Create Patient
+                </Button>
+                </Card.Content>
+                <Card.Title
+                  title="Health Condition: Deteriorating"
+                  subtitle={`Number of Patients: ${countOfDeterioratingPatients}`}
+                  subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
+                />
+                <Card.Content>
+                  <Table data={deteriorating} />
+                </Card.Content>
+              </Card>
+              <Card style={{ marginBottom: 10 }}>
+                <Card.Title
+                  title="Health Condition: Stable"
+                  subtitle={`Number of Patients: ${countOfStablePatients}`}
+                  subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
+                />
+                <Card.Content>
+                  <Table data={stable} />
+                </Card.Content>
+              </Card>
+              <Card style={{ marginBottom: 10, paddingBottom: 10 }}>
+                <Card.Title
+                  title="Health Condition: Improving"
+                  subtitle={`Number of Patients: ${countOfImprovingPatients}`}
+                  subtitleStyle={{ fontSize: 15, color: '#1DDCAF' }}
+                />
+                <Card.Content>
+                  <Table data={improving} />
+                </Card.Content>
+              </Card>
+              <View style={{ marginLeft: 10, marginRight: 10, marginBottom: 10 }}>
+                <Button
+                  title="Logout"
+                  style={{ backgroundColor: '#1DDCAF' }}
+                  color={'white'}
+                  onPress={() => this.logout()}
+                >Logout
+                </Button>
+              </View>
+            </SafeAreaView>
+          </ScrollView>
         </View>
       </>
     )
