@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Navigator from './Routes/Hometsack';
 import PractionerStack from './Routes/PractionerStack';
 import Header from './Screens/Header';
+import Ionicons from 'react-native-vector-icons/Fontisto';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -62,7 +63,28 @@ export default function App() {
     <>
       <Header />
       <NavigationContainer>
-        <Tab.Navigator>
+        <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Patient Login') {
+              iconName = focused
+                ? 'bed-patient'
+                : 'bed-patient';
+            } else if (route.name === 'Provider Login') {
+              iconName = focused ? 'doctor' : 'doctor';
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: '#1DDCAF',
+          inactiveTintColor: 'gray',
+        }}
+        >
           <Tab.Screen name="Patient Login" component={HomeStackScreen} />
           <Tab.Screen name="Provider Login" component={SettingsStackScreen} />
         </Tab.Navigator>
