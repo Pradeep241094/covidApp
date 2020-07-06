@@ -26,9 +26,9 @@ class Symptoms extends Component {
   token = undefined
   olddate = new Date()
   state = {
-    dateloaded:false,
+    dateloaded: false,
     patient_ID: '',
-    updateDate: new Date(1980,10,10),
+    updateDate: new Date(1980, 10, 10),
     symptom: {
       feverOrChills: 1,
       cough: 1,
@@ -52,14 +52,14 @@ class Symptoms extends Component {
     try {
       const token = await AsyncStorage.getItem('token')
       await this.getPatientData(username, token)
-      
+
     }
     catch (e) {
       console.log(e)
     }
   }
 
- async getPatientData(username, token) {
+  async getPatientData(username, token) {
     const patient_ID = username;
     var { updateDate, symptoms } = this.state;
     var url = `https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/FollowUpData/LastUpdated?patient_ID=${patient_ID}`;
@@ -76,7 +76,7 @@ class Symptoms extends Component {
         this.setState(
           {
             updateDate: new Date(responseJson.symptomRecords.date),
-            dateloaded:true
+            dateloaded: true
 
           });
         // console.log(Date.parse(this.newdate) < Date.parse(this.olddate))
@@ -108,8 +108,6 @@ class Symptoms extends Component {
       updateDate,
     } = this.state;
 
-    console.log('>>>>>updateDate>>>>>>>>>>',updateDate)
-
     const data = {
       "patient_ID": username,
       "symptom": {
@@ -127,7 +125,6 @@ class Symptoms extends Component {
         "symptomsAverage": symptomsAverage
       }
 
-
     }
 
     console.log('>>>>>>>>>>>>>>>>>>data', data);
@@ -140,9 +137,9 @@ class Symptoms extends Component {
         'Authorization': 'Bearer ' + token,
       },
       body: JSON.stringify(data),
-      
+
     }).then(response => JSON.stringify(response))
-  
+
       .then(responseJson => {
         Alert.alert('Successfully Added!')
       })
@@ -190,8 +187,6 @@ class Symptoms extends Component {
       }
     }
 
-    console.log('????????????????????Update Data??????????????', data);
-
     fetch('https://mdfollowupcovidapi.azurewebsites.net/api/covid/Patient/UpdateFollowUpData', {
       method: 'PUT',
       // cors: 'no-cors',
@@ -200,7 +195,7 @@ class Symptoms extends Component {
         'Authorization': 'Bearer ' + token,
       },
       body: JSON.stringify(data),
-    }).then(response =>   JSON.stringify(response))
+    }).then(response => JSON.stringify(response))
       .then(responseJson => {
         console.log(responseJson)
         Alert.alert('Successfully Updated!')
@@ -212,192 +207,192 @@ class Symptoms extends Component {
 
   render() {
     if (this.state.dateloaded) {
-    const {
-      feverOrChills,
-      cough,
-      headache,
-      shortnessOfBreath,
-      fatigue,
-      muscleOrBodyAches,
-      soreThroat,
-      lossOfTasteOrSmell,
-      congestionOrRunnyNose,
-      nauseaOrVomiting,
-      diarrhea,
-      symptomsAverage,
-      updateDate
-    } = this.state;
+      const {
+        feverOrChills,
+        cough,
+        headache,
+        shortnessOfBreath,
+        fatigue,
+        muscleOrBodyAches,
+        soreThroat,
+        lossOfTasteOrSmell,
+        congestionOrRunnyNose,
+        nauseaOrVomiting,
+        diarrhea,
+        symptomsAverage,
+        updateDate
+      } = this.state;
 
-    return (
-      <SafeAreaView style={styles.boxcontainer}>
-        <ScrollView>
-          <Card style={{ marginLeft: 10 }}>
-            <Title>Record Symptoms</Title>
-            <Card >
-              <Card.Content>
-                <Slider
-                  value={feverOrChills}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ feverOrChills: value })}
-                />
-                <Text>
-                  Fever: {feverOrChills}
-                </Text>
-                <Slider
-                  value={cough}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ cough: value })}
-                />
-                <Text>
-                  Cough: {cough}
-                </Text>
-                <Slider
-                  value={shortnessOfBreath}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ shortnessOfBreath: value })}
-                />
-                <Text>
-                  Shortness Of Breath: {shortnessOfBreath}
-                </Text>
-                <Slider
-                  value={headache}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ headache: value })}
-                />
-                <Text>
-                  Headache: {headache}
-                </Text>
-                <Slider
-                  value={muscleOrBodyAches}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ muscleOrBodyAches: value })}
-                />
-                <Text>
-                  Body Ache: {muscleOrBodyAches}
-                </Text>
-                <Slider
-                  value={soreThroat}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ soreThroat: value })}
-                />
-                <Text>
-                  Sore Throat : {soreThroat}
-                </Text>
-                <Slider
-                  value={lossOfTasteOrSmell}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ lossOfTasteOrSmell: value })}
-                />
-                <Text>
-                  Loss Of Taste Or Smell: {lossOfTasteOrSmell}
-                </Text>
-                <Slider
-                  value={nauseaOrVomiting}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ nauseaOrVomiting: value })}
-                />
-                <Text>
-                  Nausea: {nauseaOrVomiting}
-                </Text>
-                <Slider
-                  value={congestionOrRunnyNose}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ congestionOrRunnyNose: value })}
-                />
-                <Text>
-                  Congestion / RunnyNose: {congestionOrRunnyNose}
-                </Text>
-                <Slider
-                  value={fatigue}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ fatigue: value })}
-                />
-                <Text>
-                  Fatigue: {fatigue}
-                </Text>
-                <Slider
-                  value={diarrhea}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ diarrhea: value })}
-                />
-                <Text>
-                  Diarrhea: {diarrhea}
-                </Text>
-                <Slider
-                  value={symptomsAverage}
-                  minimumValue={1}
-                  maximumValue={5}
-                  thumbTintColor={"#1DDCAF"}
-                  step={1}
-                  onValueChange={value => this.setState({ symptomsAverage: value })}
-                />
-                <Text>
-                  Overall Syptoms: {symptomsAverage}
-                </Text>
-              </Card.Content>
+      return (
+        <SafeAreaView style={styles.boxcontainer}>
+          <ScrollView>
+            <Card style={{ marginLeft: 10 }}>
+              <Title>Record Symptoms</Title>
+              <Card >
+                <Card.Content>
+                  <Slider
+                    value={feverOrChills}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ feverOrChills: value })}
+                  />
+                  <Text>
+                    Fever: {feverOrChills}
+                  </Text>
+                  <Slider
+                    value={cough}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ cough: value })}
+                  />
+                  <Text>
+                    Cough: {cough}
+                  </Text>
+                  <Slider
+                    value={shortnessOfBreath}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ shortnessOfBreath: value })}
+                  />
+                  <Text>
+                    Shortness Of Breath: {shortnessOfBreath}
+                  </Text>
+                  <Slider
+                    value={headache}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ headache: value })}
+                  />
+                  <Text>
+                    Headache: {headache}
+                  </Text>
+                  <Slider
+                    value={muscleOrBodyAches}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ muscleOrBodyAches: value })}
+                  />
+                  <Text>
+                    Body Ache: {muscleOrBodyAches}
+                  </Text>
+                  <Slider
+                    value={soreThroat}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ soreThroat: value })}
+                  />
+                  <Text>
+                    Sore Throat : {soreThroat}
+                  </Text>
+                  <Slider
+                    value={lossOfTasteOrSmell}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ lossOfTasteOrSmell: value })}
+                  />
+                  <Text>
+                    Loss Of Taste Or Smell: {lossOfTasteOrSmell}
+                  </Text>
+                  <Slider
+                    value={nauseaOrVomiting}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ nauseaOrVomiting: value })}
+                  />
+                  <Text>
+                    Nausea: {nauseaOrVomiting}
+                  </Text>
+                  <Slider
+                    value={congestionOrRunnyNose}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ congestionOrRunnyNose: value })}
+                  />
+                  <Text>
+                    Congestion / RunnyNose: {congestionOrRunnyNose}
+                  </Text>
+                  <Slider
+                    value={fatigue}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ fatigue: value })}
+                  />
+                  <Text>
+                    Fatigue: {fatigue}
+                  </Text>
+                  <Slider
+                    value={diarrhea}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ diarrhea: value })}
+                  />
+                  <Text>
+                    Diarrhea: {diarrhea}
+                  </Text>
+                  <Slider
+                    value={symptomsAverage}
+                    minimumValue={1}
+                    maximumValue={5}
+                    thumbTintColor={"#1DDCAF"}
+                    step={1}
+                    onValueChange={value => this.setState({ symptomsAverage: value })}
+                  />
+                  <Text>
+                    Overall Syptoms: {symptomsAverage}
+                  </Text>
+                </Card.Content>
 
+              </Card>
+              <View style={styles.buttonContainer}>
+                {console.log('newdate>>>', ((this.state.updateDate).toDateString())),
+                  console.log('olddate>>>', this.olddate.toDateString()),
+                  Date.parse((this.state.updateDate).toDateString() + 1) < Date.parse((this.olddate).toDateString())
+                    ? <Button
+                      title="Insert"
+                      style={{ backgroundColor: '#1DDCAF' }}
+                      color={'white'}
+                      contentStyle={{ with: 50 }}
+                      onPress={() => this.insertPatientData()}
+                    >Insert</Button>
+                    : <Button
+                      title="Update"
+                      color={'white'}
+                      style={{ backgroundColor: '#1DDCAF' }}
+                      onPress={() => this.updatePatientData()}
+                    >Update</Button>
+
+                }
+              </View>
             </Card>
-            <View style={styles.buttonContainer}>
-              {console.log('newdate>>>',((this.state.updateDate).toDateString())),
-              console.log('olddate>>>',this.olddate.toDateString()),
-             Date.parse((this.state.updateDate).toDateString() + 1) < Date.parse((this.olddate).toDateString())
-                  ? <Button
-                    title="Insert"
-                    style={{ backgroundColor: '#1DDCAF' }}
-                    color={'white'}
-                    contentStyle={{ with: 50 }}
-                    onPress={() => this.insertPatientData()}
-                  >Insert</Button>
-                  : <Button
-                    title="Update"
-                    color={'white'}
-                    style={{ backgroundColor: '#1DDCAF' }}
-                    onPress={() => this.updatePatientData()}
-                  >Update</Button>
-
-              }
-            </View>
-          </Card>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  } else {
-    return <AppLoading />;
-}
-}
+          </ScrollView>
+        </SafeAreaView>
+      );
+    } else {
+      return <AppLoading />;
+    }
+  }
 }
 
 const styles = StyleSheet.create({

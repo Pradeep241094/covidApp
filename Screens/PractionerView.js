@@ -66,9 +66,9 @@ class PractionerView extends React.Component {
   };
 
   downloadFile() {
-    console.log('Hello, >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
+    // console.log('Hello, >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
     const uri = "https://mdfollowupbucket.s3.us-east-2.amazonaws.com/patientHealthConditions.csv"
-    let fileUri = FileSystem.documentDirectory + "patient.csv";
+    let fileUri = FileSystem.documentDirectory + "patientGrouping.csv";
     FileSystem.downloadAsync(uri, fileUri)
       .then(({ uri }) => {
         this.saveFile(uri);
