@@ -67,8 +67,10 @@ class PractionerView extends React.Component {
 
   downloadFile() {
     // console.log('Hello, >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
+    const currentDate = new Date().toISOString();
+    console.log('currentDate>>>>>>>>>>>>>>', currentDate);
     const uri = "https://mdfollowupcovidapi.azurewebsites.net/api/covid/Provider/GetPatientGroupsCSV"
-    let fileUri = FileSystem.documentDirectory + "patientGrouping.csv";
+    let fileUri = FileSystem.documentDirectory + `patientHealthConditions_${currentDate}.csv`;
     FileSystem.downloadAsync(uri, fileUri)
       .then(({ uri }) => {
         this.saveFile(uri);
